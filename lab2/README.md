@@ -17,3 +17,8 @@ make build-debug
 ```sh
 ln -sf build-debug/compile_commands.json .
 ```
+
+## Запуск из devcontainer
+```sh
+make start-debug
+```

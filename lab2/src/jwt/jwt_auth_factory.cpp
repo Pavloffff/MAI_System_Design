@@ -1,6 +1,6 @@
-#include "jwt_auth_factory.hpp"
+#include <jwt/jwt_auth_factory.hpp>
 
-namespace auth::jwt {
+namespace jwt {
 
 JwtAuthCheckerFactory::JwtAuthCheckerFactory(
         const userver::components::ComponentContext& context)

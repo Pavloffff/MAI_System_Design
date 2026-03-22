@@ -1,23 +1,21 @@
-#include "jwt_auth_checker.hpp"
-
 #include <jwt-cpp/jwt.h>
-
 #include <userver/http/common_headers.hpp>
-#include <userver/yaml_config/merge_schemas.hpp>
 
-namespace auth::jwt {
+#include <jwt/jwt_checker.hpp>
+
+namespace jwt {
 
 namespace {
-static constexpr std::string_view kSecret = "secret";
 static constexpr std::string_view kAlgorithm = "Bearer ";
-static constexpr const char* kServiceName = "sample";
+// static constexpr const char* kServiceName = "sample";
 }
 
-JwtChecker::JwtChecker(const std::string& secret) : secret_(secret) {}
+JwtAuthChecker::JwtAuthChecker(const std::string& secret) : secret_(secret) {}
 
-JwtChecker::AuthCheckResult JwtChecker::CheckAuth(
-        const userver::server::http::HttpRequest& request,
-        userver::server::request::RequestContext& /*context*/) const {
+JwtAuthChecker::AuthCheckResult JwtAuthChecker::CheckAuth(
+    const userver::server::http::HttpRequest& request,
+    userver::server::request::RequestContext&
+) const {
     const std::string_view auth_header = request.GetHeader(userver::http::headers::kAuthorization);
     if (auth_header.empty()) {
         return AuthCheckResult{AuthCheckResult::Status::kTokenNotFound, "Missing 'Authorization' header"};
@@ -46,25 +44,4 @@ JwtChecker::AuthCheckResult JwtChecker::CheckAuth(
     }
 }
 
-JwtAuthComponent::JwtAuthComponent(
-        const userver::components::ComponentConfig& config,
-        const userver::components::ComponentContext& context)
-        : LoggableComponentBase(config, context) {
-    authorizer_ = std::make_shared<JwtChecker>(config[kSecret].As<std::string>());
-}
-
-JwtCheckerPtr JwtAuthComponent::Get() const { return authorizer_; }
-
-userver::yaml_config::Schema JwtAuthComponent::GetStaticConfigSchema() {
-    return userver::yaml_config::MergeSchemas<LoggableComponentBase>(R"(
-type: object
-description: JWT Auth Checker Component
-additionalProperties: false
-properties:
-    secret:
-        type: string
-        description: secret key for JWT validation
-)");
-}
-
-}
+} // namespace jwt

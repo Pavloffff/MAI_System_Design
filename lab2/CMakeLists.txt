@@ -36,8 +36,9 @@ include_directories(src)
 add_library(
     ${PROJECT_NAME}_objs OBJECT
     src/greeting.cpp #
-    src/auth/jwt_auth_checker.cpp #
-    src/auth/jwt_auth_factory.cpp #
+    src/jwt/jwt_auth_factory.cpp #
+    src/jwt/jwt.cpp #
+    src/jwt/jwt_checker.cpp #
     src/views/hello/handler.cpp #
 )
 target_link_libraries(
