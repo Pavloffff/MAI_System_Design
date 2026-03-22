@@ -5,7 +5,7 @@
 
 #include <userver/server/handlers/auth/auth_checker_base.hpp>
 
-namespace jwt {
+namespace lab2::jwt {
 
 class JwtAuthChecker final : public userver::server::handlers::auth::AuthCheckerBase {
 public:

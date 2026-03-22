@@ -1,8 +1,8 @@
 #include <userver/yaml_config/merge_schemas.hpp>
 
-#include <jwt/jwt.hpp>
+#include <infrastructure/jwt/jwt.hpp>
 
-namespace jwt {
+namespace lab2::jwt {
 
 namespace {
 static constexpr std::string_view kSecret = "secret";

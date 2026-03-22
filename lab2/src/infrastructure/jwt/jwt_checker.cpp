@@ -1,9 +1,9 @@
 #include <jwt-cpp/jwt.h>
 #include <userver/http/common_headers.hpp>
 
-#include <jwt/jwt_checker.hpp>
+#include <infrastructure/jwt/jwt_checker.hpp>
 
-namespace jwt {
+namespace lab2::jwt {
 
 namespace {
 static constexpr std::string_view kAlgorithm = "Bearer ";

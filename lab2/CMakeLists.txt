@@ -36,10 +36,10 @@ include_directories(src)
 add_library(
     ${PROJECT_NAME}_objs OBJECT
     src/greeting.cpp #
-    src/jwt/jwt_auth_factory.cpp #
-    src/jwt/jwt.cpp #
-    src/jwt/jwt_checker.cpp #
-    src/views/hello/handler.cpp #
+    src/infrastructure/jwt/jwt_auth_factory.cpp #
+    src/infrastructure/jwt/jwt.cpp #
+    src/infrastructure/jwt/jwt_checker.cpp #
+    src/interfaces/rest/hello_handler.cpp #
 )
 target_link_libraries(
     ${PROJECT_NAME}_objs
@@ -54,7 +54,7 @@ userver_target_generate_chaotic(
     ${PROJECT_NAME}-chgen
     # Generate serializers for responses
     GENERATE_SERIALIZERS
-    # Map '/components/schemas/*' JSONSchema types to C++ types in 'jwt-auth::STEM' namespace
+    # Map '/components/schemas/*' JSONSchema types to C++ types in 'lab2::STEM' namespace
     LAYOUT "/components/schemas/([^/]*)/=lab2::{stem}::{0}"
     OUTPUT_DIR ${CMAKE_CURRENT_BINARY_DIR}/src
     SCHEMAS ${SCHEMAS}

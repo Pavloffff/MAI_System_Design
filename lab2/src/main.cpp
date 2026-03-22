@@ -10,12 +10,12 @@
 
 #include <userver/utils/daemon_run.hpp>
 
-#include <jwt/jwt_auth_factory.hpp>
-#include <views/hello/handler.hpp>
+#include <infrastructure/jwt/jwt_auth_factory.hpp>
+#include <interfaces/rest/hello_handler.hpp>
 
 int main(int argc, char* argv[]) {
     userver::server::handlers::auth::RegisterAuthCheckerFactory<
-        jwt::JwtAuthCheckerFactory>();
+        lab2::jwt::JwtAuthCheckerFactory>();
     auto component_list =
         userver::components::MinimalServerComponentList()
             .Append<userver::server::handlers::Ping>()
@@ -25,7 +25,7 @@ int main(int argc, char* argv[]) {
             .Append<userver::server::handlers::TestsControl>()
             .Append<userver::congestion_control::Component>()
             .Append<lab2::hello::Handler>()
-            .Append<jwt::JwtAuthComponent>();
+            .Append<lab2::jwt::JwtAuthComponent>();
 
     return userver::utils::DaemonMain(argc, argv, component_list);
 }

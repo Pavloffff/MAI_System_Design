@@ -1,0 +1,170 @@
+openapi: 3.0.0
+info:
+  description: Event Management API
+  title: Service sample
+  version: "1.0.0"
+
+servers:
+  - url: uservice-sample.yandex.net
+    description: production
+  - url: uservice-sample.tst.yandex.net
+    description: testing
+
+paths:
+  /users:
+    post:
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "../definitions/users.yaml#/components/schemas/UserCreateRequestBody"
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "../definitions/users.yaml#/components/schemas/UserCreateResponseBody"
+        409:
+          description: User already exists
+    get:
+      parameters:
+        - name: name
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: surname
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "../definitions/users.yaml#/components/schemas/User"
+
+  /users/login:
+    post:
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "../definitions/users.yaml#/components/schemas/UserLoginRequestBody"
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "../definitions/users.yaml#/components/schemas/UserLoginResponseBody"
+        401:
+          description: Unauthorized
+  
+  /users/{email}:
+    get:
+      parameters:
+        - name: email
+          in: path
+          schema:
+            type: string
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "../definitions/users.yaml#/components/schemas/User"
+  
+  /talks:
+    post:
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "../definitions/talks.yaml#/components/schemas/CreateTalkRequestBody"
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "../definitions/talks.yaml#/components/schemas/Talk"
+    get:
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "../definitions/talks.yaml#/components/schemas/Talk"
+  
+  /talks/{talk_id}/events/{event_id}:
+    put:
+      parameters:
+        - name: event_id
+          in: path
+          schema:
+            type: integer
+        - name: talk_id
+          in: path
+          schema:
+            type: integer
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "../definitions/talks.yaml#/components/schemas/Talk"
+
+  /events:
+    post:
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "../definitions/events.yaml#/components/schemas/CreateEventRequestBody"
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "../definitions/events.yaml#/components/schemas/Event"
+    get:
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "../definitions/events.yaml#/components/schemas/Event"
+  
+  /events/{event_id}/talks:
+    get:
+      parameters:
+        - name: event_id
+          in: path
+          schema:
+            type: integer
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "../definitions/talks.yaml#/components/schemas/Talk"

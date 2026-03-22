@@ -1,4 +1,4 @@
-#include <views/hello/handler.hpp>
+#include <interfaces/rest/hello_handler.hpp>
 
 #include <docs/definitions/hello.hpp>
 

@@ -2,10 +2,10 @@
 
 #include <userver/server/handlers/auth/auth_checker_factory.hpp>
 
-#include <jwt/jwt_checker.hpp>
-#include <jwt/jwt.hpp>
+#include <infrastructure/jwt/jwt_checker.hpp>
+#include <infrastructure/jwt/jwt.hpp>
 
-namespace jwt {
+namespace lab2::jwt {
 
 class JwtAuthCheckerFactory final : public userver::server::handlers::auth::AuthCheckerFactoryBase {
 public:

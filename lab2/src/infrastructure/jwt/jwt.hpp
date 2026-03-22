@@ -5,9 +5,9 @@
 #include <userver/components/loggable_component_base.hpp>
 #include <userver/yaml_config/schema.hpp>
 
-#include <jwt/jwt_checker.hpp>
+#include <infrastructure/jwt/jwt_checker.hpp>
 
-namespace jwt {
+namespace lab2::jwt {
     
     class JwtAuthComponent final : public userver::components::LoggableComponentBase {
 public:
