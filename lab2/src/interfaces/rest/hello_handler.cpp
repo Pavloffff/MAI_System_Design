@@ -10,7 +10,7 @@ std::string Handler::HandleRequestThrow(
         const userver::server::http::HttpRequest& request,
         userver::server::request::RequestContext&) const {
     static constexpr std::string_view kArgName = "name";
-
+    
     request.GetHttpResponse().SetContentType(
         userver::http::content_type::kApplicationJson);
 

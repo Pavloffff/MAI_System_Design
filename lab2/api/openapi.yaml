@@ -25,7 +25,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "../definitions/users.yaml#/components/schemas/UserCreateResponseBody"
+                $ref: "../definitions/users.yaml#/components/schemas/User"
         409:
           description: User already exists
     get:
@@ -82,6 +82,8 @@ paths:
             application/json:
               schema:
                 $ref: "../definitions/users.yaml#/components/schemas/User"
+        404:
+          description: Not found
   
   /talks:
     post:

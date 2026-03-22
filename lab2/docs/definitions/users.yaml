@@ -21,15 +21,6 @@ components:
         password:
           type: string
 
-    UserCreateResponseBody:
-      type: object
-      additionalProperties: false
-      required:
-        - status
-      properties:
-        status:
-          type: boolean
-
     UserLoginRequestBody:
       type: object
       additionalProperties: false
