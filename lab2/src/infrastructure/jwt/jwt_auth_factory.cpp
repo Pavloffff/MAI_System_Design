@@ -1,14 +1,16 @@
 #include <infrastructure/jwt/jwt_auth_factory.hpp>
 
-namespace lab2::jwt {
+namespace lab2::infrastructure {
 
 JwtAuthCheckerFactory::JwtAuthCheckerFactory(
-        const userver::components::ComponentContext& context)
-        : auth_(context.FindComponent<JwtAuthComponent>()) {}
+    const userver::components::ComponentContext& context)
+    : component_(context.FindComponent<JwtAuthComponent>()) {}
 
 userver::server::handlers::auth::AuthCheckerBasePtr
 JwtAuthCheckerFactory::MakeAuthChecker(
-        const userver::server::handlers::auth::HandlerAuthConfig&) const {
-    return auth_.Get();
+    const userver::server::handlers::auth::HandlerAuthConfig&) const {
+
+    return component_.GetChecker();
 }
-}
+
+}  // namespace lab2::infrastructure

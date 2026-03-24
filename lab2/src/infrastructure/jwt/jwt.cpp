@@ -2,32 +2,69 @@
 
 #include <infrastructure/jwt/jwt.hpp>
 
-namespace lab2::jwt {
+namespace lab2::infrastructure {
 
 namespace {
-static constexpr std::string_view kSecret = "secret";
+constexpr std::string_view kPublicKey = "public_key";
+constexpr std::string_view kPrivateKey = "private_key";
+constexpr std::string_view kIssuer = "issuer";
+constexpr std::string_view kAudience = "audience";
 }
 
 JwtAuthComponent::JwtAuthComponent(
-        const userver::components::ComponentConfig& config,
-        const userver::components::ComponentContext& context)
-        : LoggableComponentBase(config, context) {
+    const userver::components::ComponentConfig& config,
+    const userver::components::ComponentContext& context)
+    : LoggableComponentBase(config, context) {
 
-    authorizer_ = std::make_shared<JwtAuthChecker>(config[kSecret].As<std::string>());
+    const auto public_key = config[kPublicKey].As<std::string>();
+    const auto private_key = config[kPrivateKey].As<std::string>();
+    const auto issuer = config[kIssuer].As<std::string>();
+    const auto audience = config[kAudience].As<std::string>();
+
+    checker_ = std::make_shared<JwtAuthChecker>(
+        public_key,
+        issuer,
+        audience
+    );
+
+    generator_ = std::make_shared<JwtTokenGenerator>(
+        private_key,
+        issuer,
+        audience
+    );
 }
 
-JwtAuthCheckerPtr JwtAuthComponent::Get() const { return authorizer_; }
+JwtAuthCheckerPtr JwtAuthComponent::GetChecker() const {
+    return checker_;
+}
+
+std::shared_ptr<JwtTokenGenerator> JwtAuthComponent::GetGenerator() const {
+    return generator_;
+}
 
 userver::yaml_config::Schema JwtAuthComponent::GetStaticConfigSchema() {
-    return userver::yaml_config::MergeSchemas<LoggableComponentBase>(R"(
+    return userver::yaml_config::MergeSchemas<
+        userver::components::LoggableComponentBase>(R"(
 type: object
-description: JWT Auth Checker Component
+description: JWT Auth Component (RS256)
 additionalProperties: false
 properties:
-    secret:
+    public_key:
         type: string
-        description: secret key for JWT validation
+        description: PEM encoded RSA public key
+    private_key:
+        type: string
+        description: PEM encoded RSA private key
+    issuer:
+        type: string
+    audience:
+        type: string
+required:
+    - public_key
+    - private_key
+    - issuer
+    - audience
 )");
 }
 
-}
+}  // namespace lab2::infrastructure

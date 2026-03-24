@@ -2,21 +2,24 @@
 
 #include <userver/server/handlers/auth/auth_checker_factory.hpp>
 
-#include <infrastructure/jwt/jwt_checker.hpp>
 #include <infrastructure/jwt/jwt.hpp>
 
-namespace lab2::jwt {
+namespace lab2::infrastructure {
 
-class JwtAuthCheckerFactory final : public userver::server::handlers::auth::AuthCheckerFactoryBase {
+class JwtAuthCheckerFactory final
+    : public userver::server::handlers::auth::AuthCheckerFactoryBase {
 public:
-  static constexpr const char* kAuthType = "jwt-auth";
+    static constexpr const char* kAuthType = "jwt-auth";
 
-explicit JwtAuthCheckerFactory(const userver::components::ComponentContext& context);
+    explicit JwtAuthCheckerFactory(
+        const userver::components::ComponentContext& context);
 
-userver::server::handlers::auth::AuthCheckerBasePtr MakeAuthChecker(const userver::server::handlers::auth::HandlerAuthConfig&) const override;
+    userver::server::handlers::auth::AuthCheckerBasePtr
+    MakeAuthChecker(
+        const userver::server::handlers::auth::HandlerAuthConfig&) const override;
 
 private:
-    jwt::JwtAuthComponent& auth_;
+    JwtAuthComponent& component_;
 };
 
-}
+}  // namespace lab2::infrastructure

@@ -15,7 +15,7 @@
 
 int main(int argc, char* argv[]) {
     userver::server::handlers::auth::RegisterAuthCheckerFactory<
-        lab2::jwt::JwtAuthCheckerFactory>();
+        lab2::infrastructure::JwtAuthCheckerFactory>();
     auto component_list =
         userver::components::MinimalServerComponentList()
             .Append<userver::server::handlers::Ping>()
@@ -25,7 +25,7 @@ int main(int argc, char* argv[]) {
             .Append<userver::server::handlers::TestsControl>()
             .Append<userver::congestion_control::Component>()
             .Append<lab2::hello::Handler>()
-            .Append<lab2::jwt::JwtAuthComponent>();
+            .Append<lab2::infrastructure::JwtAuthComponent>();
 
     return userver::utils::DaemonMain(argc, argv, component_list);
 }

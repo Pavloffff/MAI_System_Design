@@ -1,27 +1,33 @@
 #pragma once
 
+#include <memory>
+#include <string>
+
 #include <userver/components/component_config.hpp>
 #include <userver/components/component_context.hpp>
 #include <userver/components/loggable_component_base.hpp>
 #include <userver/yaml_config/schema.hpp>
 
 #include <infrastructure/jwt/jwt_checker.hpp>
+#include <infrastructure/jwt/jwt_generator.hpp>
 
-namespace lab2::jwt {
-    
-    class JwtAuthComponent final : public userver::components::LoggableComponentBase {
+namespace lab2::infrastructure {
+
+class JwtAuthComponent final: public userver::components::LoggableComponentBase {
 public:
     static constexpr auto kName = "jwt-auth-component";
 
     JwtAuthComponent(const userver::components::ComponentConfig& config,
-                    const userver::components::ComponentContext& context);
+                     const userver::components::ComponentContext& context);
 
-    JwtAuthCheckerPtr Get() const;
+    JwtAuthCheckerPtr GetChecker() const;
+    std::shared_ptr<JwtTokenGenerator> GetGenerator() const;
 
     static userver::yaml_config::Schema GetStaticConfigSchema();
 
 private:
-    JwtAuthCheckerPtr authorizer_;
+    JwtAuthCheckerPtr checker_;
+    std::shared_ptr<JwtTokenGenerator> generator_;
 };
 
-}
+}  // namespace lab2::infrastructure

@@ -47,4 +47,57 @@ std::vector<lab2::users::User> UserService::GetUsersByNameAndSurname(
     return result;
 }
 
+lab2::users::UserLoginResponseBody UserService::UserLogin(
+    const lab2::users::UserLoginRequestBody& loginDto)
+{
+    auto users = userRepo_.Find(
+        lab2::domain::Email(loginDto.email),
+        std::nullopt,
+        std::nullopt
+    );
+
+    if (users.empty()) {
+        return lab2::users::UserLoginResponseBody{
+            false,
+            ""
+        };
+    }
+
+    const auto& user = users.front();
+    const bool valid = user.CheckPassword(loginDto.password, hasher_);
+
+    if (!valid) {
+        return lab2::users::UserLoginResponseBody{
+            false,
+            ""
+        };
+    }
+    const std::string token = tokenRepo_.Get(user);
+
+    return lab2::users::UserLoginResponseBody{
+        true,
+        token
+    };
+}
+
+std::optional<lab2::users::User> UserService::GetUserByEmail(
+    const lab2::domain::Email& email) const
+{
+    auto users = userRepo_.Find(
+        email, std::nullopt, std::nullopt);
+    
+    if (users.empty()) {
+        return std::nullopt;
+    }
+
+    const auto& user = users.front();
+    return lab2::users::User{
+        static_cast<int>(user.Id().Value()),
+        user.GetEmail().Value(),
+        user.GetName(),
+        user.GetSurname(),
+        user.GetPhone().Value()
+    };
+}
+
 }

@@ -1,47 +1,69 @@
 #include <jwt-cpp/jwt.h>
 #include <userver/http/common_headers.hpp>
+#include <userver/logging/log.hpp>
 
 #include <infrastructure/jwt/jwt_checker.hpp>
 
-namespace lab2::jwt {
+namespace lab2::infrastructure {
 
 namespace {
-static constexpr std::string_view kAlgorithm = "Bearer ";
-// static constexpr const char* kServiceName = "sample";
+static constexpr std::string_view kBearerPrefix = "Bearer ";
 }
 
-JwtAuthChecker::JwtAuthChecker(const std::string& secret) : secret_(secret) {}
+JwtAuthChecker::JwtAuthChecker(const std::string& public_key_pem,
+                               std::string issuer,
+                               std::string audience)
+    : public_key_(public_key_pem),
+      issuer_(std::move(issuer)),
+      audience_(std::move(audience)) {}
 
 JwtAuthChecker::AuthCheckResult JwtAuthChecker::CheckAuth(
     const userver::server::http::HttpRequest& request,
-    userver::server::request::RequestContext&
-) const {
-    const std::string_view auth_header = request.GetHeader(userver::http::headers::kAuthorization);
+    userver::server::request::RequestContext& context) const {
+
+    const auto auth_header =
+        request.GetHeader(userver::http::headers::kAuthorization);
+
     if (auth_header.empty()) {
-        return AuthCheckResult{AuthCheckResult::Status::kTokenNotFound, "Missing 'Authorization' header"};
+        return {AuthCheckResult::Status::kTokenNotFound,
+                "Missing Authorization header"};
     }
-
-    if (!auth_header.starts_with(kAlgorithm)) {
-        return AuthCheckResult{AuthCheckResult::Status::kInvalidToken, "Invalid authorization type, expected 'Bearer'"};
+    if (!auth_header.starts_with(kBearerPrefix)) {
+        return {AuthCheckResult::Status::kInvalidToken,
+                "Expected Bearer token"};
     }
+    const std::string token =
+        std::string(auth_header.substr(kBearerPrefix.size()));
 
-    const std::string_view token = auth_header.substr(kAlgorithm.length());
     try {
-        // TODO: Verify me!
-        // (https://github.com/Thalhammer/jwt-cpp/blob/master/example/jwks-verify.cpp)
-        return {};
+        auto decoded = ::jwt::decode(token);
 
-    } catch (const ::jwt::error::token_verification_exception& exc) {
-        return AuthCheckResult{
-            AuthCheckResult::Status::kInvalidToken,
-            "Token verification failed: " + std::string{exc.what()}
-        };
-    } catch (const std::exception& exc) {
-        return AuthCheckResult{
-            AuthCheckResult::Status::kForbidden,
-            "Token processing error: " + std::string{exc.what()}
-        };
+        if (decoded.get_algorithm() != "RS256") {
+            return {AuthCheckResult::Status::kInvalidToken,
+                    "Unexpected signing algorithm"};
+        }
+
+        auto verifier = ::jwt::verify()
+            .allow_algorithm(::jwt::algorithm::rs256(public_key_, "", "", ""))
+            .with_issuer(issuer_)
+            .with_audience(audience_)
+            .leeway(30UL);
+        verifier.verify(decoded);
+
+        if (!decoded.has_subject()) {
+            return {AuthCheckResult::Status::kInvalidToken,
+                    "Missing subject claim"};
+        }
+        context.SetData("user_id", decoded.get_subject());
+
+        return {AuthCheckResult::Status::kOk, ""};
+    } catch (const ::jwt::error::token_verification_exception& e) {
+        return {AuthCheckResult::Status::kInvalidToken,
+                std::string("Verification failed: ") + e.what()};
+    } catch (const std::exception& e) {
+        return {AuthCheckResult::Status::kForbidden,
+                std::string("Token processing error: ") + e.what()};
     }
 }
 
-} // namespace jwt
+}

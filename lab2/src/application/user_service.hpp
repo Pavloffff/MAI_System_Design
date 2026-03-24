@@ -39,7 +39,7 @@ public:
         const std::string& name,
         const std::string& surname) const;
     lab2::users::UserLoginResponseBody UserLogin(
-        const lab2::users::UserLoginResponseBody& loginDto);
+        const lab2::users::UserLoginRequestBody& loginDto);
     std::optional<lab2::users::User> GetUserByEmail(
         const lab2::domain::Email& email) const;
 
