@@ -71,7 +71,9 @@ components_manager:
         #     load-enabled: true
         #     secret: $jwt_secret_key
         #     secret#env: JWT_SECRET_KEY
-        
+        user-service-component:
+            load-enabled: true
+
         jwt-auth-component:
             load-enabled: true
             public_key: |

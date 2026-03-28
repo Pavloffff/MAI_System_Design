@@ -44,6 +44,7 @@ add_library(
     src/infrastructure/jwt/jwt_auth_factory.cpp #
     src/infrastructure/in_memory/user_repository.cpp #
     src/domain/user.cpp #
+    src/application/user_component.cpp #
     src/application/user_service.cpp #
 )
 target_link_libraries(

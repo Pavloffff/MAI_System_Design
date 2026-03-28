@@ -11,7 +11,7 @@
 #include <userver/utils/daemon_run.hpp>
 #include <infrastructure/jwt/jwt_auth_factory.hpp>
 #include <interfaces/rest/users/users_handler.hpp>
-
+#include <application/user_component.hpp>
 
 int main(int argc, char* argv[]) {
     userver::server::handlers::auth::RegisterAuthCheckerFactory<
@@ -25,6 +25,7 @@ int main(int argc, char* argv[]) {
             .Append<userver::server::handlers::TestsControl>()
             .Append<userver::congestion_control::Component>()
             .Append<lab2::interfaces::UserLoginHandler>()
+            .Append<lab2::application::UserServiceComponent>()
             .Append<lab2::infrastructure::JwtAuthComponent>();
 
     return userver::utils::DaemonMain(argc, argv, component_list);
