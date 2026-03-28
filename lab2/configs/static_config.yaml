@@ -54,14 +54,6 @@ components_manager:
             throttling_enabled: false
             url_trailing_slash: strict-match
 
-        # handler-hello: # Finally! Our handler.
-        #     path: /hello # Registering handler by URL '/hello'.
-        #     method: POST # It will only reply to POST requests.
-        #     auth:
-        #         types:
-        #             - jwt-auth
-        #     task_processor: main-task-processor # Run it on CPU bound task processor
-
         handler-user-get:
             path: /users
             method: GET
@@ -80,11 +72,14 @@ components_manager:
             method: POST
             task_processor: main-task-processor
 
-        # jwt-auth-component:
-        #     load-enabled: true
-        #     secret: $jwt_secret_key
-        #     secret#env: JWT_SECRET_KEY
-        
+        handler-users-get:
+            path: /users/{name_surname}
+            method: GET
+            auth:
+                types:
+                    - jwt-auth
+            task_processor: main-task-processor
+
         user-service-component:
             load-enabled: true
 

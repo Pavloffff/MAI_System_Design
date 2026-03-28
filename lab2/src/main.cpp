@@ -27,6 +27,7 @@ int main(int argc, char* argv[]) {
             .Append<lab2::interfaces::UserLoginHandler>()
             .Append<lab2::interfaces::UserUserCreateHandler>()
             .Append<lab2::interfaces::UserGetUserHandler>()
+            .Append<lab2::interfaces::UserGetUsersHandler>()
             .Append<lab2::application::UserServiceComponent>()
             .Append<lab2::infrastructure::JwtAuthComponent>();
 

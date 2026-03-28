@@ -33,7 +33,7 @@ std::string UserLoginHandler::HandleRequestThrow(
         userver::formats::json::ValueBuilder responseJson(response);
         return userver::formats::json::ToString(responseJson.ExtractValue());
     } catch (const std::exception& e) {
-        LOG_ERROR() << "Login failed: " << e.what();
+        LOG_ERROR() << "Failed: " << e.what();
 
         throw userver::server::handlers::InternalServerError(
             userver::formats::json::MakeObject(
@@ -67,7 +67,7 @@ std::string UserUserCreateHandler::HandleRequestThrow(
         userver::formats::json::ValueBuilder responseJson(response);
         return userver::formats::json::ToString(responseJson.ExtractValue());
     } catch (const std::exception& e) {
-        LOG_ERROR() << "Login failed: " << e.what();
+        LOG_ERROR() << "Failed: " << e.what();
 
         throw userver::server::handlers::InternalServerError(
             userver::formats::json::MakeObject(
@@ -104,7 +104,61 @@ std::string UserGetUserHandler::HandleRequestThrow(
         request.SetResponseStatus(userver::server::http::HttpStatus::kNotFound);
         return "{}";
     } catch (const std::exception& e) {
-        LOG_ERROR() << "Login failed: " << e.what();
+        LOG_ERROR() << "Failed: " << e.what();
+
+        throw userver::server::handlers::InternalServerError(
+            userver::formats::json::MakeObject(
+                "message", "Internal server error"
+            )
+        );
+    }
+}
+
+UserGetUsersHandler::UserGetUsersHandler(
+    const userver::components::ComponentConfig& config,
+    const userver::components::ComponentContext& context)
+    : HttpHandlerBase(config, context),
+    userService_(context.FindComponent<lab2::application::UserServiceComponent>().GetService())
+{
+}
+
+std::string UserGetUsersHandler::HandleRequestThrow(
+    const userver::server::http::HttpRequest& request,
+    userver::server::request::RequestContext& context) const
+{
+    try {
+
+        request.GetHttpResponse().SetContentType(userver::http::content_type::kApplicationJson);
+    
+        const std::string name_surname = request.GetPathArg("name_surname");
+        
+        LOG_INFO() << "NAME_SURNAME: " << name_surname;
+        
+        size_t pos = name_surname.find(',');
+        std::string name;
+        std::string surname;
+
+        if (pos != std::string::npos) {
+            name = name_surname.substr(0, pos);
+            surname = name_surname.substr(pos + 1);
+        } else {
+            name = name_surname;
+            surname = "";
+        }
+
+        LOG_INFO() << "NAME: " << name << " SURNAME: " << surname;
+
+        auto users = userService_->GetUsersByNameAndSurname(name, surname);
+        
+        userver::formats::json::ValueBuilder itemsBuilder;
+        for (auto user : users) {
+            userver::formats::json::ValueBuilder userJson(user);
+            itemsBuilder.PushBack(userJson.ExtractValue());
+        }
+
+        return userver::formats::json::ToString(itemsBuilder.ExtractValue());
+    } catch (const std::exception& e) {
+        LOG_ERROR() << "Failed: " << e.what();
 
         throw userver::server::handlers::InternalServerError(
             userver::formats::json::MakeObject(

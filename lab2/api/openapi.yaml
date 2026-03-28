@@ -65,12 +65,7 @@ paths:
   /users/{name}/{surname}:
     get:
       parameters:
-        - name: name
-          in: path
-          required: true
-          schema:
-            type: string
-        - name: surname
+        - name: name_surname
           in: path
           required: true
           schema:
