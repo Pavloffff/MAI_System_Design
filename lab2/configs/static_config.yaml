@@ -80,6 +80,14 @@ components_manager:
                     - jwt-auth
             task_processor: main-task-processor
 
+        handler-talk-create:
+            path: /talks
+            method: POST
+            auth:
+                types:
+                    - wt-auth
+            task_processor: main-task-processor
+
         user-service-component:
             load-enabled: true
 

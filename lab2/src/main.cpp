@@ -7,11 +7,13 @@
 #include <userver/server/handlers/ping.hpp>
 #include <userver/server/handlers/tests_control.hpp>
 #include <userver/testsuite/testsuite_support.hpp>
-
 #include <userver/utils/daemon_run.hpp>
+
 #include <infrastructure/jwt/jwt_auth_factory.hpp>
 #include <interfaces/rest/users/users_handler.hpp>
+#include <interfaces/rest/talks/talks_handler.hpp>
 #include <application/user_component.hpp>
+#include <application/talk_component.hpp>
 
 int main(int argc, char* argv[]) {
     userver::server::handlers::auth::RegisterAuthCheckerFactory<
@@ -28,7 +30,10 @@ int main(int argc, char* argv[]) {
             .Append<lab2::interfaces::UserUserCreateHandler>()
             .Append<lab2::interfaces::UserGetUserHandler>()
             .Append<lab2::interfaces::UserGetUsersHandler>()
+            .Append<lab2::interfaces::TalkCreateHandler>()
+            .Append<lab2::interfaces::TalkGetAllHandler>()
             .Append<lab2::application::UserServiceComponent>()
+            .Append<lab2::application::TalkServiceComponent>()
             .Append<lab2::infrastructure::JwtAuthComponent>();
 
     return userver::utils::DaemonMain(argc, argv, component_list);

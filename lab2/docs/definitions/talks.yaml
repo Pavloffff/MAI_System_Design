@@ -35,7 +35,7 @@ components:
         - event_id
       properties:
         id:
-          type: string
+          type: integer
         title:
           type: string
         description:

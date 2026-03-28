@@ -27,4 +27,4 @@ private:
     std::shared_ptr<lab2::application::UserService> userService_;
 };
 
-}  // namespace lab2::infrastructure
+} // namespace lab2::application

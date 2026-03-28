@@ -33,20 +33,38 @@ userver_setup_environment()
 # Common sources
 include_directories(src)
 
+file(GLOB_RECURSE APPLICATION_SOURCES src/application/*.cpp)
+file(GLOB_RECURSE DOMAIN_SOURCES src/domain/*.cpp)
+file(GLOB_RECURSE INFRASTRUCTURE_SOURCES src/infrastructure/*.cpp)
+file(GLOB_RECURSE INTERFACES_SOURCES src/interfaces/*.cpp)
+
 add_library(
     ${PROJECT_NAME}_objs OBJECT
-    src/interfaces/rest/users/users_handler.cpp #
-    src/infrastructure/ssl/password_hasher.cpp #
-    src/infrastructure/jwt/jwt.cpp #
-    src/infrastructure/jwt/jwt_token_repository.cpp #
-    src/infrastructure/jwt/jwt_generator.cpp #
-    src/infrastructure/jwt/jwt_checker.cpp #
-    src/infrastructure/jwt/jwt_auth_factory.cpp #
-    src/infrastructure/in_memory/user_repository.cpp #
-    src/domain/user.cpp #
-    src/application/user_component.cpp #
-    src/application/user_service.cpp #
+    ${APPLICATION_SOURCES}
+    ${DOMAIN_SOURCES}
+    ${INFRASTRUCTURE_SOURCES}
+    ${INTERFACES_SOURCES}
 )
+
+# add_library(
+#     ${PROJECT_NAME}_objs OBJECT
+#     src/application/talk_component.cpp #
+#     src/application/talk_service.cpp #
+#     src/application/user_component.cpp #
+#     src/application/user_service.cpp #
+#     src/domain/user.cpp #
+#     src/infrastructure/in_memory/talk_repository.cpp #
+#     src/infrastructure/in_memory/user_repository.cpp
+#     src/interfaces/rest/users/users_handler.cpp #
+#     src/infrastructure/ssl/password_hasher.cpp #
+#     src/infrastructure/jwt/jwt.cpp #
+#     src/infrastructure/jwt/jwt_token_repository.cpp #
+#     src/infrastructure/jwt/jwt_generator.cpp #
+#     src/infrastructure/jwt/jwt_checker.cpp #
+#     src/infrastructure/jwt/jwt_auth_factory.cpp #
+#     src/infrastructure/in_memory/user_repository.cpp #
+# )
+
 target_link_libraries(
     ${PROJECT_NAME}_objs
     PUBLIC userver::core #
