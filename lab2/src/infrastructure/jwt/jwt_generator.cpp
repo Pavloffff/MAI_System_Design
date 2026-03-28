@@ -1,13 +1,14 @@
 #include <jwt-cpp/jwt.h>
 #include <openssl/rand.h>
 #include <infrastructure/jwt/jwt_generator.hpp>
+#include <userver/logging/log.hpp>
 
 namespace lab2::infrastructure {
 
-JwtTokenGenerator::JwtTokenGenerator(std::string private_key_pem,
+JwtTokenGenerator::JwtTokenGenerator(std::string private_key,
                                      std::string issuer,
                                      std::string audience)
-    : private_key_(std::move(private_key_pem)),
+    : private_key_(std::move(private_key)),
       issuer_(std::move(issuer)),
       audience_(std::move(audience)) {}
 
@@ -23,7 +24,8 @@ std::string JwtTokenGenerator::Generate(
     const std::string jti =
         ::jwt::base::encode<::jwt::alphabet::base64url>(
             std::string(reinterpret_cast<const char*>(nonce), sizeof(nonce)));
-
+    
+    LOG_INFO() << "Private key: " << private_key_;
     return ::jwt::create()
         .set_type("JWT")
         .set_issuer(issuer_)
@@ -33,7 +35,7 @@ std::string JwtTokenGenerator::Generate(
         .set_issued_at(now)
         .set_not_before(now)
         .set_expires_at(now + ttl)
-        .sign(::jwt::algorithm::rs256(private_key_, "", "", ""));
+        .sign(::jwt::algorithm::hs256(private_key_));
 }
 
 }

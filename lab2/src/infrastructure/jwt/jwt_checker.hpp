@@ -13,7 +13,7 @@ public:
     using AuthCheckResult =
         userver::server::handlers::auth::AuthCheckResult;
 
-    JwtAuthChecker(const std::string& public_key_pem,
+    JwtAuthChecker(const std::string& private_key,
                    std::string issuer,
                    std::string audience);
 
@@ -26,7 +26,7 @@ public:
     }
 
 private:
-    std::string public_key_;
+    std::string private_key_;
     std::string issuer_;
     std::string audience_;
 };

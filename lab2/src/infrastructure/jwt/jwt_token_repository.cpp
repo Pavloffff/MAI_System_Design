@@ -14,10 +14,8 @@ JwtTokenRepository::JwtTokenRepository(
 
 std::string JwtTokenRepository::Get(std::shared_ptr<lab2::domain::User> user)
 {
-    // Получаем строковое представление UserId
     const std::string user_id = std::to_string(user->Id().Value());
 
-    // Генерируем JWT для данного пользователя
     return token_generator_->Generate(user_id);
 }
 

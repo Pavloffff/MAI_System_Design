@@ -10,10 +10,10 @@ namespace {
 static constexpr std::string_view kBearerPrefix = "Bearer ";
 }
 
-JwtAuthChecker::JwtAuthChecker(const std::string& public_key_pem,
+JwtAuthChecker::JwtAuthChecker(const std::string& private_key,
                                std::string issuer,
                                std::string audience)
-    : public_key_(public_key_pem),
+    : private_key_(private_key),
       issuer_(std::move(issuer)),
       audience_(std::move(audience)) {}
 
@@ -44,7 +44,7 @@ JwtAuthChecker::AuthCheckResult JwtAuthChecker::CheckAuth(
         }
 
         auto verifier = ::jwt::verify()
-            .allow_algorithm(::jwt::algorithm::rs256(public_key_, "", "", ""))
+            .allow_algorithm(::jwt::algorithm::hs256(private_key_))
             .with_issuer(issuer_)
             .with_audience(audience_)
             .leeway(30UL);

@@ -33,4 +33,27 @@ std::string UserLoginHandler::HandleRequestThrow(
     return userver::formats::json::ToString(responseJson.ExtractValue());
 }
 
+UserUserCreateHandler::UserUserCreateHandler(
+    const userver::components::ComponentConfig& config,
+    const userver::components::ComponentContext& context)
+    : HttpHandlerBase(config, context),
+    userService_(context.FindComponent<lab2::application::UserServiceComponent>().GetService())
+{
+}
+
+std::string UserUserCreateHandler::HandleRequestThrow(
+    const userver::server::http::HttpRequest& request,
+    userver::server::request::RequestContext& context) const
+{
+    request.GetHttpResponse().SetContentType(userver::http::content_type::kApplicationJson);
+
+    auto requestJson = userver::formats::json::FromString(request.RequestBody());
+    auto userCreateDto = requestJson.As<users::UserCreateRequestBody>();
+
+    auto response = userService_->CreateUser(userCreateDto);
+
+    userver::formats::json::ValueBuilder responseJson(response);
+    return userver::formats::json::ToString(responseJson.ExtractValue());
+}
+
 }  // namespace lab2::interfaces

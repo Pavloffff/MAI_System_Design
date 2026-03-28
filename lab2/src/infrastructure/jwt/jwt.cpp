@@ -1,3 +1,4 @@
+#include <userver/logging/log.hpp>
 #include <userver/yaml_config/merge_schemas.hpp>
 
 #include <infrastructure/jwt/jwt.hpp>
@@ -5,7 +6,6 @@
 namespace lab2::infrastructure {
 
 namespace {
-constexpr std::string_view kPublicKey = "public_key";
 constexpr std::string_view kPrivateKey = "private_key";
 constexpr std::string_view kIssuer = "issuer";
 constexpr std::string_view kAudience = "audience";
@@ -16,13 +16,12 @@ JwtAuthComponent::JwtAuthComponent(
     const userver::components::ComponentContext& context)
     : LoggableComponentBase(config, context) {
 
-    const auto public_key = config[kPublicKey].As<std::string>();
     const auto private_key = config[kPrivateKey].As<std::string>();
     const auto issuer = config[kIssuer].As<std::string>();
     const auto audience = config[kAudience].As<std::string>();
 
     checker_ = std::make_shared<JwtAuthChecker>(
-        public_key,
+        private_key,
         issuer,
         audience
     );
@@ -49,12 +48,9 @@ type: object
 description: JWT Auth Component (RS256)
 additionalProperties: false
 properties:
-    public_key:
-        type: string
-        description: PEM encoded RSA public key
     private_key:
         type: string
-        description: PEM encoded RSA private key
+        description: private key
     issuer:
         type: string
         description: Issuer for JWT tokens
@@ -62,7 +58,6 @@ properties:
         type: string
         description: Audience for JWT tokens
 required:
-    - public_key
     - private_key
     - issuer
     - audience

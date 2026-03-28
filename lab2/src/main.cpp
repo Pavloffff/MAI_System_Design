@@ -25,6 +25,7 @@ int main(int argc, char* argv[]) {
             .Append<userver::server::handlers::TestsControl>()
             .Append<userver::congestion_control::Component>()
             .Append<lab2::interfaces::UserLoginHandler>()
+            .Append<lab2::interfaces::UserUserCreateHandler>()
             .Append<lab2::application::UserServiceComponent>()
             .Append<lab2::infrastructure::JwtAuthComponent>();
 

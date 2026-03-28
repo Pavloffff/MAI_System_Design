@@ -7,7 +7,7 @@ namespace lab2::infrastructure {
 
 class JwtTokenGenerator {
 public:
-    JwtTokenGenerator(std::string private_key_pem,
+    JwtTokenGenerator(std::string private_key,
                       std::string issuer,
                       std::string audience);
 
