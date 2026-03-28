@@ -2,11 +2,12 @@
 
 namespace lab2::application {
 
-lab2::users::User UserService::CreateUser(const lab2::users::UserCreateRequestBody& userDto)
+lab2::users::User UserService::CreateUser(
+    const lab2::users::UserCreateRequestBody& userDto)
 {
-    std::string password_hash = hasher_.Hash(userDto.password);
-    
-    lab2::domain::User user(
+    std::string password_hash = hasher_->Hash(userDto.password);
+
+    auto user = std::make_shared<lab2::domain::User>(
         lab2::domain::UserId(0),
         lab2::domain::Email(userDto.email),
         userDto.name,
@@ -15,14 +16,14 @@ lab2::users::User UserService::CreateUser(const lab2::users::UserCreateRequestBo
         password_hash
     );
 
-    user = userRepo_.Add(user);
+    user = userRepo_->Add(user);
 
     return lab2::users::User{
-        static_cast<int>(user.Id().Value()),
-        user.GetEmail().Value(),
-        user.GetName(),
-        user.GetSurname(),
-        user.GetPhone().Value()
+        static_cast<int>(user->Id().Value()),
+        user->GetEmail().Value(),
+        user->GetName(),
+        user->GetSurname(),
+        user->GetPhone().Value()
     };
 }
 
@@ -31,16 +32,15 @@ std::vector<lab2::users::User> UserService::GetUsersByNameAndSurname(
 {
     std::vector<lab2::users::User> result;
 
-    auto users = userRepo_.Find(
-        std::nullopt, name, surname);
+    auto users = userRepo_->Find(std::nullopt, name, surname);
 
-    for (auto user : users) {
+    for (const auto& user : users) {
         result.push_back(lab2::users::User{
-        static_cast<int>(user.Id().Value()),
-        user.GetEmail().Value(),
-        user.GetName(),
-        user.GetSurname(),
-        user.GetPhone().Value()
+            static_cast<int>(user->Id().Value()),
+            user->GetEmail().Value(),
+            user->GetName(),
+            user->GetSurname(),
+            user->GetPhone().Value()
         });
     }
 
@@ -50,54 +50,45 @@ std::vector<lab2::users::User> UserService::GetUsersByNameAndSurname(
 lab2::users::UserLoginResponseBody UserService::UserLogin(
     const lab2::users::UserLoginRequestBody& loginDto)
 {
-    auto users = userRepo_.Find(
+    auto users = userRepo_->Find(
         lab2::domain::Email(loginDto.email),
         std::nullopt,
         std::nullopt
     );
 
     if (users.empty()) {
-        return lab2::users::UserLoginResponseBody{
-            false,
-            ""
-        };
+        return {false, ""};
     }
 
     const auto& user = users.front();
-    const bool valid = user.CheckPassword(loginDto.password, hasher_);
+    const bool valid = user->CheckPassword(loginDto.password, *hasher_);
 
     if (!valid) {
-        return lab2::users::UserLoginResponseBody{
-            false,
-            ""
-        };
+        return {false, ""};
     }
-    const std::string token = tokenRepo_.Get(user);
 
-    return lab2::users::UserLoginResponseBody{
-        true,
-        token
-    };
+    const std::string token = tokenRepo_->Get(user);
+
+    return {true, token};
 }
 
 std::optional<lab2::users::User> UserService::GetUserByEmail(
     const lab2::domain::Email& email) const
 {
-    auto users = userRepo_.Find(
-        email, std::nullopt, std::nullopt);
-    
+    auto users = userRepo_->Find(email, std::nullopt, std::nullopt);
+
     if (users.empty()) {
         return std::nullopt;
     }
 
     const auto& user = users.front();
     return lab2::users::User{
-        static_cast<int>(user.Id().Value()),
-        user.GetEmail().Value(),
-        user.GetName(),
-        user.GetSurname(),
-        user.GetPhone().Value()
+        static_cast<int>(user->Id().Value()),
+        user->GetEmail().Value(),
+        user->GetName(),
+        user->GetSurname(),
+        user->GetPhone().Value()
     };
 }
 
-}
+} // namespace lab2::application

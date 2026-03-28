@@ -54,13 +54,18 @@ components_manager:
             throttling_enabled: false
             url_trailing_slash: strict-match
 
-        handler-hello: # Finally! Our handler.
-            path: /hello # Registering handler by URL '/hello'.
-            method: POST # It will only reply to POST requests.
-            auth:
-                types:
-                    - jwt-auth
-            task_processor: main-task-processor # Run it on CPU bound task processor
+        # handler-hello: # Finally! Our handler.
+        #     path: /hello # Registering handler by URL '/hello'.
+        #     method: POST # It will only reply to POST requests.
+        #     auth:
+        #         types:
+        #             - jwt-auth
+        #     task_processor: main-task-processor # Run it on CPU bound task processor
+
+        handler-user-login:
+            path: /users/login
+            method: POST
+            task_processor: main-task-processor
 
         # jwt-auth-component:
         #     load-enabled: true
@@ -69,7 +74,44 @@ components_manager:
         
         jwt-auth-component:
             load-enabled: true
-            public_key: ${JWT_PUBLIC_KEY}    # PEM-encoded RSA public key
-            private_key: ${JWT_PRIVATE_KEY}  # PEM-encoded RSA private key
-            issuer: my-issuer
-            audience: my-audience
+            public_key: |
+              -----BEGIN PUBLIC KEY-----
+              MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAu1JqPhTgQV1HvgoonsUT
+              RPZN4CeIzUGcqjVIU14M9AzJ7/qhBfUJQmpPMzE8BWSlvLqEMPZ3wCSKJIJ1X6Pa
+              L36WVxOjZFZNAZ5Rl1Ka1HM7x6Eu5s198oYuuMCYCyCtKiZUUpTj5n5+HYtc39Le
+              cSZ8eaX1F1ScNdE4BpUUlnATUUm/gOUplJ6zfP/VGWy4cnxRfp9jWFGgXnuafcy4
+              gBAEVOKyr32yexnbn3Lci4/qcsQ9+M3xaDOuZFHlOkeNj28tQg3iJsZLu2Xa7b87
+              xbo4iuVJczuUChpmZhAW5RBwMYwdJSauVpoAETTH11HM3oohl+vVW8ronYRURPwD
+              9wIDAQAB
+              -----END PUBLIC KEY-----
+            private_key: |
+              -----BEGIN PRIVATE KEY-----
+              MIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQC7Umo+FOBBXUe+
+              CiiexRNE9k3gJ4jNQZyqNUhTXgz0DMnv+qEF9QlCak8zMTwFZKW8uoQw9nfAJIok
+              gnVfo9ovfpZXE6NkVk0BnlGXUprUczvHoS7mzX3yhi64wJgLIK0qJlRSlOPmfn4d
+              i1zf0t5xJnx5pfUXVJw10TgGlRSWcBNRSb+A5SmUnrN8/9UZbLhyfFF+n2NYUaBe
+              e5p9zLiAEARU4rKvfbJ7GdufctyLj+pyxD34zfFoM65kUeU6R42Pby1CDeImxku7
+              ZdrtvzvFujiK5UlzO5QKGmZmEBblEHAxjB0lJq5WmgARNMfXUczeiiGX69Vbyuid
+              hFRE/AP3AgMBAAECggEAJAOcWYM5+lcsy+S4Go5ZPhD8t/Ph4VSUAkVsOlsCsoki
+              6fiNrM+HkDVQNM9qcr7+/mH9uEwqic58oLhUSKb/89GqpeMorsnI1F7T4PwIuH/P
+              JnpewhEP/ei+YtbkZH9Ly6bC332ws0fuh0+b84xfJ/H2TI0TqgCiZ9ZppxpScvmU
+              hzzJRANKjKVyLb+OKrQo3teYTeL3Vuj3EeNTU7oQ+OODAKS1MkakU8ChgQHHdvQO
+              vPdUmp9mpu3uWPStZgyHJ5SkvHfXtd19+xJ2B2vqcbVgrxrfF3xIr8k0HTFMOvVO
+              8m0Klki/rEs6BY/ujtDxtSXNX1clOtPc0EODxs62AQKBgQD0WqOkxTi8MZ+tnXfq
+              v1KF9E9yzK2CteP19Q4pjHKjv5VflD3nQQc07hmSdOH3Y1CmYFc+R0Kh9QiMtjRr
+              wXNcDFYBzyx6XmNBrrA9A9RyHe62kjjXmhLupkyyJlW1JVVtfX9cn3/ookq+ojWr
+              RGEjXdL6uukSHaGGwShgI9ko4QKBgQDEP+1y+dVqn/LbOQ4X+s6LLbVrqw09ka48
+              JuZtYtuHm33Qt2KFuP2W27tsuqwHmcpyX/8XDz+KfFcSlikMWjt2ggvA9nHReumL
+              QdnXQILjD1Ya/iCyfb4t1ysVzipXv1/JfqfgJlXeeG+incStGOIF3TXhrfHtoCag
+              Ws7zG2WP1wKBgQCqzGRQOu7iVMlpQIVel6bmLRQPiVPK5rrV5BmnHx3OqY6OhX8T
+              ktenvrovLfX4xvnLodG5nXPM4wq72Gwh2dF5yMGheB991VYJxkI4E+I+df+yq9iB
+              k5eiKqm3aKZF/TeOVcddhbuRb0dRou5irWQ8pUtgqJ9bY0zRdVh0gvo64QKBgGlK
+              BwINqgOXpvsYxEf3RsMDFfebAPKMa1dYY35CcJdzw++rw88Mrfk3EHpIOK2nRCdS
+              +5AKnUOWbDzLlWBMNOTi5p1zWyNRd2VAQjirIs3hV4gJ2c8JiXQcocAEKVGEmkaH
+              jlfDGYTPRs2PKYrY88LDqPnYkhi0OKUFs0xY4YdnAoGBALYusEKvI1lRH+ITpB80
+              CP4t8xEJNrumFDOuFzZ5iITDutTcG8YmkV+4+BEHRT4sD94AW3fyp0g+4vcHpE+k
+              OQ6DQSBpYzWv4YU5uiE0vqzs9RvnZydRBuUKdVk8/jXpTh+cXL00S7RmZm0b5Spd
+              OnYBHdTXYDA3fBv29tBAwlDM
+              -----END PRIVATE KEY-----
+            issuer: "my-issuer"
+            audience: "my-audience"

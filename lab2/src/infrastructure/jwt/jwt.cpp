@@ -57,8 +57,10 @@ properties:
         description: PEM encoded RSA private key
     issuer:
         type: string
+        description: Issuer for JWT tokens
     audience:
         type: string
+        description: Audience for JWT tokens
 required:
     - public_key
     - private_key

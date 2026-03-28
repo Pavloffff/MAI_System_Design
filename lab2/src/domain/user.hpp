@@ -15,6 +15,7 @@ public:
 
     bool operator==(const UserId& other) const { return value_ == other.value_; }
     bool operator!=(const UserId& other) const { return !(*this == other); }
+    bool operator<(const UserId& other) const { return value_ < other.value_; }
     UserId& operator++() { ++value_; return *this; }
     UserId operator++(int) { UserId old(*this); ++value_; return old; }
 

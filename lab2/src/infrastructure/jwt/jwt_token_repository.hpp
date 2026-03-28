@@ -15,7 +15,7 @@ public:
 
     ~JwtTokenRepository() override = default;
 
-    std::string Get(const lab2::domain::User& user) override;
+    std::string Get(std::shared_ptr<lab2::domain::User> user) override;
 
 private:
     std::shared_ptr<JwtTokenGenerator> token_generator_;

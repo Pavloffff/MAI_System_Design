@@ -35,11 +35,16 @@ include_directories(src)
 
 add_library(
     ${PROJECT_NAME}_objs OBJECT
-    src/greeting.cpp #
-    src/infrastructure/jwt/jwt_auth_factory.cpp #
+    src/interfaces/rest/users/users_handler.cpp #
+    src/infrastructure/ssl/password_hasher.cpp #
     src/infrastructure/jwt/jwt.cpp #
+    src/infrastructure/jwt/jwt_token_repository.cpp #
+    src/infrastructure/jwt/jwt_generator.cpp #
     src/infrastructure/jwt/jwt_checker.cpp #
-    src/interfaces/rest/hello_handler.cpp #
+    src/infrastructure/jwt/jwt_auth_factory.cpp #
+    src/infrastructure/in_memory/user_repository.cpp #
+    src/domain/user.cpp #
+    src/application/user_service.cpp #
 )
 target_link_libraries(
     ${PROJECT_NAME}_objs

@@ -67,7 +67,7 @@ public:
     {
         auto table_it = storage_.find(table_name);
         if (table_it == storage_.end())
-            return std::nullopt;
+            return nullptr;
 
         return &table_it->second;
     }
