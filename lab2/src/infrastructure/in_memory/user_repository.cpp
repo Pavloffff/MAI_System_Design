@@ -14,8 +14,6 @@ std::shared_ptr<lab2::domain::User> InMemoryUserRepository::Add(
                 continue;
             }
 
-            LOG_INFO() << "EMAIL: " << userPtr->GetEmail().Value();
-
             checkUsers.push_back(userPtr);
         }
         if (checkUsers.size() > 0) {
@@ -23,10 +21,7 @@ std::shared_ptr<lab2::domain::User> InMemoryUserRepository::Add(
         }
     }
 
-    LOG_INFO() << "TABLE NAME: " << kTableName;
-
     user->SetId(nextId_);
-    LOG_INFO() << "USER " << user->Id().Value() << user->GetEmail().Value();
     storage_.Insert(kTableName, nextId_, user);
     nextId_++;
 
@@ -40,17 +35,12 @@ std::vector<std::shared_ptr<lab2::domain::User>> InMemoryUserRepository::Find(
 {
     std::vector<std::shared_ptr<lab2::domain::User>> result;
 
-    LOG_INFO() << "TABLE NAME: " << kTableName;
-
     auto maybeTable = storage_.TryGetTable(kTableName);
     if (maybeTable == nullptr) {
         return result;
     }
-    LOG_INFO() << "TABLE SIZE: " << maybeTable->size();
 
     for (const auto& [id, userPtr] : *maybeTable) {
-        LOG_INFO() << "EMAIL: " << userPtr->GetEmail().Value() << " " << email->Value();
-        
         if (email.has_value() && userPtr->GetEmail().Value() != email->Value()) {
             continue;
         }
@@ -61,12 +51,8 @@ std::vector<std::shared_ptr<lab2::domain::User>> InMemoryUserRepository::Find(
             continue;
         }
 
-        LOG_INFO() << "EMAIL: " << userPtr->GetEmail().Value();
-
         result.push_back(userPtr);
     }
-
-    LOG_INFO() << "RESULT SIZE: " << result.size();
 
     return result;
 }

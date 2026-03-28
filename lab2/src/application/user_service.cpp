@@ -57,15 +57,11 @@ lab2::users::UserLoginResponseBody UserService::UserLogin(
         std::nullopt
     );
 
-    LOG_INFO() << "USERS SIZE: " << users.size();
-    LOG_INFO() << "EMAIL: " << users[0]->GetEmail().Value();
-    
     if (users.empty()) {
         return {false, ""};
     }
 
     const auto& user = users.front();
-    LOG_INFO() << "USER: " << user->GetEmail().Value() << user->GetName();
     const bool valid = user->CheckPassword(loginDto.password, *hasher_);
 
     if (!valid) {
