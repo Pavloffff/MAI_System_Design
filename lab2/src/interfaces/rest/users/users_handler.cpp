@@ -22,15 +22,25 @@ std::string UserLoginHandler::HandleRequestThrow(
     const userver::server::http::HttpRequest& request,
     userver::server::request::RequestContext& context) const
 {
-    request.GetHttpResponse().SetContentType(userver::http::content_type::kApplicationJson);
+    try {
+        request.GetHttpResponse().SetContentType(userver::http::content_type::kApplicationJson);
 
-    auto requestJson = userver::formats::json::FromString(request.RequestBody());
-    auto loginDto = requestJson.As<users::UserLoginRequestBody>();
+        auto requestJson = userver::formats::json::FromString(request.RequestBody());
+        auto loginDto = requestJson.As<users::UserLoginRequestBody>();
 
-    auto response = userService_->UserLogin(loginDto);
+        auto response = userService_->UserLogin(loginDto);
 
-    userver::formats::json::ValueBuilder responseJson(response);
-    return userver::formats::json::ToString(responseJson.ExtractValue());
+        userver::formats::json::ValueBuilder responseJson(response);
+        return userver::formats::json::ToString(responseJson.ExtractValue());
+    } catch (const std::exception& e) {
+        LOG_ERROR() << "Login failed: " << e.what();
+
+        throw userver::server::handlers::InternalServerError(
+            userver::formats::json::MakeObject(
+                "message", "Internal server error"
+            )
+        );
+    }
 }
 
 UserUserCreateHandler::UserUserCreateHandler(
@@ -45,15 +55,63 @@ std::string UserUserCreateHandler::HandleRequestThrow(
     const userver::server::http::HttpRequest& request,
     userver::server::request::RequestContext& context) const
 {
-    request.GetHttpResponse().SetContentType(userver::http::content_type::kApplicationJson);
+    try {
 
-    auto requestJson = userver::formats::json::FromString(request.RequestBody());
-    auto userCreateDto = requestJson.As<users::UserCreateRequestBody>();
+        request.GetHttpResponse().SetContentType(userver::http::content_type::kApplicationJson);
+    
+        auto requestJson = userver::formats::json::FromString(request.RequestBody());
+        auto userCreateDto = requestJson.As<users::UserCreateRequestBody>();
+    
+        auto response = userService_->CreateUser(userCreateDto);
+    
+        userver::formats::json::ValueBuilder responseJson(response);
+        return userver::formats::json::ToString(responseJson.ExtractValue());
+    } catch (const std::exception& e) {
+        LOG_ERROR() << "Login failed: " << e.what();
 
-    auto response = userService_->CreateUser(userCreateDto);
+        throw userver::server::handlers::InternalServerError(
+            userver::formats::json::MakeObject(
+                "message", "Internal server error"
+            )
+        );
+    }
+}
 
-    userver::formats::json::ValueBuilder responseJson(response);
-    return userver::formats::json::ToString(responseJson.ExtractValue());
+UserGetUserHandler::UserGetUserHandler(
+    const userver::components::ComponentConfig& config,
+    const userver::components::ComponentContext& context)
+    : HttpHandlerBase(config, context),
+    userService_(context.FindComponent<lab2::application::UserServiceComponent>().GetService())
+{
+}
+
+std::string UserGetUserHandler::HandleRequestThrow(
+    const userver::server::http::HttpRequest& request,
+    userver::server::request::RequestContext& context) const
+{
+    try {
+
+        request.GetHttpResponse().SetContentType(userver::http::content_type::kApplicationJson);
+    
+        const std::string email = request.GetArg("email");
+        auto response = userService_->GetUserByEmail(email);
+    
+        if (response.has_value()) {
+            userver::formats::json::ValueBuilder responseJson(*response);
+            return userver::formats::json::ToString(responseJson.ExtractValue());
+        }
+        
+        request.SetResponseStatus(userver::server::http::HttpStatus::kNotFound);
+        return "{}";
+    } catch (const std::exception& e) {
+        LOG_ERROR() << "Login failed: " << e.what();
+
+        throw userver::server::handlers::InternalServerError(
+            userver::formats::json::MakeObject(
+                "message", "Internal server error"
+            )
+        );
+    }
 }
 
 }  // namespace lab2::interfaces

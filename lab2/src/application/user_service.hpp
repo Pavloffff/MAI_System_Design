@@ -43,7 +43,7 @@ public:
     lab2::users::UserLoginResponseBody UserLogin(
         const lab2::users::UserLoginRequestBody& loginDto);
     std::optional<lab2::users::User> GetUserByEmail(
-        const lab2::domain::Email& email) const;
+        const std::string& email) const;
 
 private:
     std::shared_ptr<IUserRepository> userRepo_;

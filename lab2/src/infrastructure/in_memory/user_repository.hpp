@@ -1,6 +1,5 @@
 #pragma once
 
-#include <mutex>
 #include <vector>
 #include <memory>
 #include <optional>
@@ -28,7 +27,6 @@ public:
 private:
     static constexpr const char* kTableName = "users";
     mutable Storage storage_;
-    mutable std::mutex mutex_;
     lab2::domain::UserId nextId_ = lab2::domain::UserId(0);
 };
 

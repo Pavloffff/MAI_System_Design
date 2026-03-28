@@ -25,7 +25,6 @@ std::string JwtTokenGenerator::Generate(
         ::jwt::base::encode<::jwt::alphabet::base64url>(
             std::string(reinterpret_cast<const char*>(nonce), sizeof(nonce)));
     
-    LOG_INFO() << "Private key: " << private_key_;
     return ::jwt::create()
         .set_type("JWT")
         .set_issuer(issuer_)

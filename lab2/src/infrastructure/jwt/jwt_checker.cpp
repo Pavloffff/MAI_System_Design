@@ -38,11 +38,6 @@ JwtAuthChecker::AuthCheckResult JwtAuthChecker::CheckAuth(
     try {
         auto decoded = ::jwt::decode(token);
 
-        if (decoded.get_algorithm() != "RS256") {
-            return {AuthCheckResult::Status::kInvalidToken,
-                    "Unexpected signing algorithm"};
-        }
-
         auto verifier = ::jwt::verify()
             .allow_algorithm(::jwt::algorithm::hs256(private_key_))
             .with_issuer(issuer_)

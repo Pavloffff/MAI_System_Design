@@ -1,6 +1,7 @@
 #pragma once
 
 #include <memory>
+#include <string>
 
 #include <userver/components/loggable_component_base.hpp>
 #include <userver/components/component_context.hpp>
