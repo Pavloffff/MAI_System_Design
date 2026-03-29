@@ -23,7 +23,7 @@
 
 ## 2. Проектирование REST API
 
-В файле api/openapi.yaml схема API. В директории docs/definitions - модели данных. 
+В файле [api/openapi.yaml](api/openapi.yaml) схема API. В директории [docs/definitions](docs/definitions) - модели данных. 
 
 ---
 
@@ -38,13 +38,13 @@
 
 ## 4. Реализация аутентификации
 
-- Реализована JWT авторизация (простая, HS256). Пристствует валидация юзера по id с помощью jwt на некоторых endpoint-ах, также на всех endpoint-ах, кроме Create User и login. Подробнее в configs/static_config.yaml
+- Реализована JWT авторизация (простая, HS256). Пристствует валидация юзера по id с помощью jwt на некоторых endpoint-ах, также на всех endpoint-ах, кроме Create User и login. Подробнее в [configs/static_config.yaml](configs/static_config.yaml) 
 
 ---
 
 ## 5. Документирование API
 
-Openapi-спецификация в api/openapi.yaml
+Openapi-спецификация в [api/openapi.yaml](api/openapi.yaml) 
 
 ---
 
@@ -56,17 +56,18 @@ Openapi-спецификация в api/openapi.yaml
 
 ## 7. Результат
 
-- Исходный код: 
-- openapi.yaml: 
-- README.md:
-- Тесты: 
-- Dockerfile: 
-- docker-compose.yaml: 
+- Исходный код: [src](src) 
+- openapi.yaml: [api/openapi.yaml](api/openapi.yaml)
+- README.md: [README.md](README.md)
+- Тесты: [tests](tests)
+- Dockerfile: [Dockerfile](Dockerfile)
+- docker-compose.yaml: [docker-compose.yaml](docker-compose.yaml)
 
 ---
 
 ## 8. Запуск
 ```
+git clone https://github.com/Pavloffff/MAI_System_Design.git
 cd lab2
 docker-compose up
 ```
