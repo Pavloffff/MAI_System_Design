@@ -14,6 +14,9 @@ public:
     ~InMemoryTalkRepository() override = default;
 
     std::shared_ptr<lab2::domain::Talk> Add(std::shared_ptr<lab2::domain::Talk> talk) override;
+    std::optional<std::shared_ptr<lab2::domain::Talk>> Get(lab2::domain::TalkId talkId) const override;
+    std::vector<std::shared_ptr<lab2::domain::Talk>> Find(domain::EventId eventId) const override;
+    std::shared_ptr<lab2::domain::Talk> Update(std::shared_ptr<lab2::domain::Talk> talk, domain::EventId eventId) override;
     std::vector<std::shared_ptr<lab2::domain::Talk>> GetAll() const override;
 
 private:

@@ -121,21 +121,33 @@ paths:
             application/json:
               schema:
                 $ref: "../definitions/events.yaml#/components/schemas/Event"
+
+  /events/{event_id}/talks:
     get:
+      parameters:
+        - name: event_id
+          in: path
+          schema:
+            type: integer
       responses:
         200:
           description: OK
           content:
             application/json:
               schema:
+                schema:
                 type: array
                 items:
-                  $ref: "../definitions/events.yaml#/components/schemas/Event"
+                  $ref: "../definitions/talks.yaml#/components/schemas/Talk"
   
-  /events/{event_id}/talks:
-    get:
+  /events/{event_id}/talks/{talk_id}:
+    put:
       parameters:
         - name: event_id
+          in: path
+          schema:
+            type: integer
+        - name: talk_id
           in: path
           schema:
             type: integer

@@ -90,7 +90,6 @@ std::string UserGetUserHandler::HandleRequestThrow(
     userver::server::request::RequestContext& context) const
 {
     try {
-
         request.GetHttpResponse().SetContentType(userver::http::content_type::kApplicationJson);
     
         const std::string email = request.GetArg("email");
@@ -132,8 +131,6 @@ std::string UserGetUsersHandler::HandleRequestThrow(
     
         const std::string name_surname = request.GetPathArg("name_surname");
         
-        LOG_INFO() << "NAME_SURNAME: " << name_surname;
-        
         size_t pos = name_surname.find(',');
         std::string name;
         std::string surname;
@@ -145,8 +142,6 @@ std::string UserGetUsersHandler::HandleRequestThrow(
             name = name_surname;
             surname = "";
         }
-
-        LOG_INFO() << "NAME: " << name << " SURNAME: " << surname;
 
         auto users = userService_->GetUsersByNameAndSurname(name, surname);
         

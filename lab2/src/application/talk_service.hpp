@@ -15,6 +15,9 @@ public:
     virtual ~ITalkRepository() = default;
 
     virtual std::shared_ptr<lab2::domain::Talk> Add(std::shared_ptr<lab2::domain::Talk> talk) = 0;
+    virtual std::optional<std::shared_ptr<lab2::domain::Talk>> Get(lab2::domain::TalkId talkId) const = 0;
+    virtual std::vector<std::shared_ptr<lab2::domain::Talk>> Find(domain::EventId eventId) const = 0;
+    virtual std::shared_ptr<lab2::domain::Talk> Update(std::shared_ptr<lab2::domain::Talk> talk, domain::EventId eventId) = 0;
     virtual std::vector<std::shared_ptr<lab2::domain::Talk>> GetAll() const = 0;
 };
 

@@ -17,6 +17,9 @@
 #include <infrastructure/components/hasher.hpp>
 #include <infrastructure/components/user_repository.hpp>
 #include <infrastructure/components/talk_repository.hpp>
+#include <infrastructure/components/event_repository.hpp>
+#include <application/event_component.hpp>
+#include <interfaces/rest/events/events_handler.hpp>
 
 int main(int argc, char* argv[]) {
     userver::server::handlers::auth::RegisterAuthCheckerFactory<
@@ -35,10 +38,15 @@ int main(int argc, char* argv[]) {
             .Append<lab2::interfaces::UserGetUsersHandler>()
             .Append<lab2::interfaces::TalkCreateHandler>()
             .Append<lab2::interfaces::TalkGetAllHandler>()
+            .Append<lab2::interfaces::EventAddTalkHandler>()
+            .Append<lab2::interfaces::EventGetTalksHandler>()
+            .Append<lab2::interfaces::EventCreateHandler>()
             .Append<lab2::application::UserServiceComponent>()
             .Append<lab2::application::TalkServiceComponent>()
+            .Append<lab2::application::EventServiceComponent>()
             .Append<lab2::infrastructure::UserRepositoryComponent>()
             .Append<lab2::infrastructure::TalkRepositoryComponent>()
+            .Append<lab2::infrastructure::EventRepositoryComponent>()
             .Append<lab2::infrastructure::HasherComponent>()
             .Append<lab2::infrastructure::JwtAuthComponent>();
 

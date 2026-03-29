@@ -16,6 +16,7 @@ components:
         - place
         - start_time
         - end_time
+        - user_id
       properties:
         title:
           type: string
@@ -37,6 +38,8 @@ components:
           $ref: "../definitions.yaml#/components/schemas/DateTime"
         end_time:
           $ref: "../definitions.yaml#/components/schemas/DateTime"
+        user_id:
+          type: integer
 
     Event:
       type: object
@@ -51,6 +54,7 @@ components:
         - place
         - start_time
         - end_time
+        - user_id
       properties:
         id:
           type: integer
@@ -74,3 +78,5 @@ components:
           $ref: "../definitions.yaml#/components/schemas/DateTime"
         end_time:
           $ref: "../definitions.yaml#/components/schemas/DateTime"
+        user_id:
+          type: integer

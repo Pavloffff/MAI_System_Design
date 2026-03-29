@@ -36,19 +36,17 @@ public:
           start_(std::move(start)), end_(std::move(end)), userId_(std::move(userId)), 
           eventId_(std::move(eventId)) {}
     
-    bool CheckTimeInterval() {
-        return start_ < end_;
-    }
+    bool CheckTimeInterval() const;
+    void SetId(TalkId id);
+    void SetEventId(EventId eventId);
+    TalkId GetId() const;
+    const std::string& GetTitle() const;
+    const std::optional<std::string>& GetDescription() const;
+    std::chrono::system_clock::time_point GetStart() const;
+    std::chrono::system_clock::time_point GetEnd() const;
+    UserId GetUserId() const;
+    EventId GetEventId() const;
 
-    void SetId(TalkId id) { this->id_ = id; }
-    
-    TalkId GetId() const { return id_; }
-    const std::string& GetTitle() const { return title_; }
-    const std::optional<std::string>& GetDescription() const { return description_; }
-    std::chrono::system_clock::time_point GetStart() const { return start_; }
-    std::chrono::system_clock::time_point GetEnd() const { return end_; }
-    UserId GetUserId() const { return userId_; }
-    EventId GetEventId() const { return eventId_; }
 
 private:
     TalkId id_;

@@ -16,9 +16,7 @@ public:
     using Storage = InMemoryDB<lab2::domain::UserId, std::shared_ptr<lab2::domain::User>>;
 
 public:
-    InMemoryUserRepository() {
-        LOG_INFO() << "UserRepository constructed: " << this;
-    };
+    InMemoryUserRepository() = default;
     ~InMemoryUserRepository() override = default;
 
     std::shared_ptr<lab2::domain::User> Add(std::shared_ptr<lab2::domain::User> user) override;

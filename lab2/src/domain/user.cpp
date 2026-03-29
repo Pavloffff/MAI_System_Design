@@ -30,5 +30,4 @@ void User::SetId(UserId id) {
     this->id_ = id;
 }
 
-
 }

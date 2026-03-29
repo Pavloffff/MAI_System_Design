@@ -71,7 +71,7 @@ components_manager:
             path: /users/login
             method: POST
             task_processor: main-task-processor
-
+      
         handler-users-get:
             path: /users/{name_surname}
             method: GET
@@ -96,16 +96,46 @@ components_manager:
                     - jwt-auth
             task_processor: main-task-processor
 
+        handler-event-create:
+            path: /events
+            method: POST
+            auth:
+                types:
+                    - jwt-auth
+            task_processor: main-task-processor
+        
+        handler-event-add-talk:
+            path: /events/{event_id}/talks/{talk_id}
+            method: PUT
+            auth:
+                types:
+                    - jwt-auth
+            task_processor: main-task-processor
+        
+        handler-event-get-talks:
+            path: /events/{event_id}/talks
+            method: GET
+            auth:
+                types:
+                    - jwt-auth
+            task_processor: main-task-processor
+
         user-service-component:
             load-enabled: true
 
         talk-service-component:
             load-enabled: true
 
+        event-service-component:
+            load-enabled: true
+
         user-repository-component:
             load-enabled: true
 
         talk-repository-component:
+            load-enabled: true
+        
+        event-repository-component:
             load-enabled: true
 
         ssl-hasher-component:

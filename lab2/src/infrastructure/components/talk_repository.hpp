@@ -2,6 +2,7 @@
 
 #include <userver/components/loggable_component_base.hpp>
 #include <infrastructure/in_memory/talk_repository.hpp>
+
 namespace lab2::infrastructure {
 
 class TalkRepositoryComponent final : public userver::components::LoggableComponentBase {
