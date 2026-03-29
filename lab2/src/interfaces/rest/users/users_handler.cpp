@@ -1,6 +1,6 @@
 #include <interfaces/rest/users/users_handler.hpp>
 
-#include <infrastructure/jwt/jwt.hpp>
+#include <infrastructure/components/jwt.hpp>
 #include <infrastructure/jwt/jwt_token_repository.hpp>
 #include <infrastructure/in_memory/user_repository.hpp>
 #include <infrastructure/ssl/password_hasher.hpp>

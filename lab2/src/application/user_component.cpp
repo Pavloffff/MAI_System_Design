@@ -1,7 +1,10 @@
 #include <application/user_component.hpp>
 #include <userver/components/component_config.hpp>
 #include <application/user_service.hpp>
-#include <infrastructure/jwt/jwt.hpp>
+#include <infrastructure/components/jwt.hpp>
+#include <infrastructure/jwt/jwt_token_repository.hpp>
+#include <infrastructure/components/hasher.hpp>
+#include <infrastructure/components/user_repository.hpp>
 
 namespace lab2::application {
 
@@ -13,8 +16,8 @@ UserServiceComponent::UserServiceComponent(
     const auto& jwtComponent = context.FindComponent<infrastructure::JwtAuthComponent>();
     auto tokenRepo = std::make_shared<infrastructure::JwtTokenRepository>(jwtComponent.GetGenerator());
 
-    auto userRepo = std::make_shared<infrastructure::InMemoryUserRepository>();
-    auto hasher = std::make_shared<infrastructure::SslPasswordHasher>();
+    auto userRepo = context.FindComponent<infrastructure::UserRepositoryComponent>().GetRepository();
+    auto hasher = context.FindComponent<infrastructure::HasherComponent>().GetHasher();
 
     userService_ = std::make_shared<lab2::application::UserService>(
         userRepo, tokenRepo, hasher

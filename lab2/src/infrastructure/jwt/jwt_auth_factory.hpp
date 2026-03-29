@@ -2,7 +2,7 @@
 
 #include <userver/server/handlers/auth/auth_checker_factory.hpp>
 
-#include <infrastructure/jwt/jwt.hpp>
+#include <infrastructure/components/jwt.hpp>
 
 namespace lab2::infrastructure {
 

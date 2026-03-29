@@ -1,5 +1,6 @@
 #pragma once
 
+#include <userver/logging/log.hpp>
 #include <vector>
 #include <memory>
 #include <optional>
@@ -15,10 +16,13 @@ public:
     using Storage = InMemoryDB<lab2::domain::UserId, std::shared_ptr<lab2::domain::User>>;
 
 public:
-    InMemoryUserRepository() = default;
+    InMemoryUserRepository() {
+        LOG_INFO() << "UserRepository constructed: " << this;
+    };
     ~InMemoryUserRepository() override = default;
 
     std::shared_ptr<lab2::domain::User> Add(std::shared_ptr<lab2::domain::User> user) override;
+    std::optional<std::shared_ptr<lab2::domain::User>> Get(lab2::domain::UserId userId) const override;
     std::vector<std::shared_ptr<lab2::domain::User>> Find(
         const std::optional<lab2::domain::Email>& email,
         const std::optional<std::string>& name,

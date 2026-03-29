@@ -14,6 +14,7 @@ public:
     virtual ~IUserRepository() = default;
 
     virtual std::shared_ptr<lab2::domain::User> Add(std::shared_ptr<lab2::domain::User> user) = 0;
+    virtual std::optional<std::shared_ptr<lab2::domain::User>> Get(lab2::domain::UserId userId) const = 0;
     virtual std::vector<std::shared_ptr<lab2::domain::User>> Find(
         const std::optional<lab2::domain::Email>& email,
         const std::optional<std::string>& name,

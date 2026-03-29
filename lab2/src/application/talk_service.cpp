@@ -3,16 +3,22 @@
 namespace lab2::application {
 
 lab2::talks::Talk TalkService::CreateTalk(
-    const lab2::talks::CreateTalkRequestBody& userDto)
+    const lab2::talks::CreateTalkRequestBody& talkDto)
 {
+    auto userId = lab2::domain::UserId(talkDto.user_id);
+    auto user = userRepo_->Get(userId);
+    if (!user.has_value()) {
+        throw std::runtime_error("User not found");
+    }
+
     auto talk = std::make_shared<lab2::domain::Talk>(
         lab2::domain::TalkId(0),
-        userDto.title,
-        userDto.description,
-        userDto.start_time.GetTimePoint(),
-        userDto.end_time.GetTimePoint(),
-        lab2::domain::UserId(userDto.user_id),
-        lab2::domain::EventId(userDto.event_id)
+        talkDto.title,
+        talkDto.description,
+        talkDto.start_time.GetTimePoint(),
+        talkDto.end_time.GetTimePoint(),
+        userId,
+        lab2::domain::EventId(talkDto.event_id)
     );
     talk->CheckTimeInterval();
 

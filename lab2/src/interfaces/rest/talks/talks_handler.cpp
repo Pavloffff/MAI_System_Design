@@ -21,9 +21,12 @@ std::string TalkCreateHandler::HandleRequestThrow(
         request.GetHttpResponse().SetContentType(userver::http::content_type::kApplicationJson);
 
         auto requestJson = userver::formats::json::FromString(request.RequestBody());
-        auto loginDto = requestJson.As<lab2::talks::CreateTalkRequestBody>();
+        auto createTalkDto = requestJson.As<lab2::talks::CreateTalkRequestBody>();
         
-        auto response = talkService_->CreateTalk(loginDto);
+        auto tokenUserId = std::stoi(context.GetData<std::string>("user_id"));
+        createTalkDto.user_id = tokenUserId;
+
+        auto response = talkService_->CreateTalk(createTalkDto);
 
         userver::formats::json::ValueBuilder responseJson(response);
         return userver::formats::json::ToString(responseJson.ExtractValue());

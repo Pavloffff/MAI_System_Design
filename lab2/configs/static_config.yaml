@@ -102,6 +102,15 @@ components_manager:
         talk-service-component:
             load-enabled: true
 
+        user-repository-component:
+            load-enabled: true
+
+        talk-repository-component:
+            load-enabled: true
+
+        ssl-hasher-component:
+            load-enabled: true
+
         jwt-auth-component:
             load-enabled: true
             private_key: "private_key"

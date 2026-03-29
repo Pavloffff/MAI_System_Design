@@ -1,7 +1,7 @@
 #include <userver/logging/log.hpp>
 #include <userver/yaml_config/merge_schemas.hpp>
 
-#include <infrastructure/jwt/jwt.hpp>
+#include <infrastructure/components/jwt.hpp>
 
 namespace lab2::infrastructure {
 

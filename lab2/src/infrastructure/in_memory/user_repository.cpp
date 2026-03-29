@@ -28,6 +28,22 @@ std::shared_ptr<lab2::domain::User> InMemoryUserRepository::Add(
     return user;
 }
 
+std::optional<std::shared_ptr<lab2::domain::User>> InMemoryUserRepository::Get(
+    lab2::domain::UserId userId) const
+{
+    auto maybeTable = storage_.TryGetTable(kTableName);
+    if (maybeTable == nullptr) {
+        return std::nullopt;
+    }
+
+    auto it = maybeTable->find(userId);
+    if (it == maybeTable->end()) {
+        return std::nullopt;
+    }
+
+    return it->second;
+}
+
 std::vector<std::shared_ptr<lab2::domain::User>> InMemoryUserRepository::Find(
     const std::optional<lab2::domain::Email>& email,
     const std::optional<std::string>& name,

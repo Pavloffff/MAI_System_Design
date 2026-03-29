@@ -1,16 +1,12 @@
 #pragma once
 
 #include <memory>
-#include <string>
 
 #include <userver/components/loggable_component_base.hpp>
 #include <userver/components/component_context.hpp>
 #include <userver/components/component_config.hpp>
 
 #include <application/user_service.hpp>
-#include <infrastructure/in_memory/user_repository.hpp>
-#include <infrastructure/jwt/jwt_token_repository.hpp>
-#include <infrastructure/ssl/password_hasher.hpp>
 
 namespace lab2::application {
 

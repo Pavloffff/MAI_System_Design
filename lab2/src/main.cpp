@@ -14,6 +14,9 @@
 #include <interfaces/rest/talks/talks_handler.hpp>
 #include <application/user_component.hpp>
 #include <application/talk_component.hpp>
+#include <infrastructure/components/hasher.hpp>
+#include <infrastructure/components/user_repository.hpp>
+#include <infrastructure/components/talk_repository.hpp>
 
 int main(int argc, char* argv[]) {
     userver::server::handlers::auth::RegisterAuthCheckerFactory<
@@ -34,6 +37,9 @@ int main(int argc, char* argv[]) {
             .Append<lab2::interfaces::TalkGetAllHandler>()
             .Append<lab2::application::UserServiceComponent>()
             .Append<lab2::application::TalkServiceComponent>()
+            .Append<lab2::infrastructure::UserRepositoryComponent>()
+            .Append<lab2::infrastructure::TalkRepositoryComponent>()
+            .Append<lab2::infrastructure::HasherComponent>()
             .Append<lab2::infrastructure::JwtAuthComponent>();
 
     return userver::utils::DaemonMain(argc, argv, component_list);
