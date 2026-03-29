@@ -11,8 +11,8 @@ lab2::talks::Talk TalkService::CreateTalk(
         userDto.description,
         userDto.start_time.GetTimePoint(),
         userDto.end_time.GetTimePoint(),
-        userDto.user_id,
-        userDto.event_id
+        lab2::domain::UserId(userDto.user_id),
+        lab2::domain::EventId(userDto.event_id)
     );
     talk->CheckTimeInterval();
 

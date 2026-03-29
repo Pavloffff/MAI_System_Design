@@ -29,7 +29,7 @@ private:
 
 class Talk {
 public:
-    Talk(TalkId id, std::string title, std::string description,
+    Talk(TalkId id, std::string title, std::optional<std::string> description,
          std::chrono::system_clock::time_point start,std::chrono::system_clock::time_point end, 
          UserId userId, EventId eventId)
         : id_(id), title_(std::move(title)), description_(std::move(description)),

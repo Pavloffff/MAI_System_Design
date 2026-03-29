@@ -85,10 +85,21 @@ components_manager:
             method: POST
             auth:
                 types:
-                    - wt-auth
+                    - jwt-auth
+            task_processor: main-task-processor
+
+        handler-talk-get-all:
+            path: /talks
+            method: GET
+            auth:
+                types:
+                    - jwt-auth
             task_processor: main-task-processor
 
         user-service-component:
+            load-enabled: true
+
+        talk-service-component:
             load-enabled: true
 
         jwt-auth-component:

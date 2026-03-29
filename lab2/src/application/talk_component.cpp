@@ -8,7 +8,8 @@ TalkServiceComponent::TalkServiceComponent(
     const userver::components::ComponentContext& context)
     : LoggableComponentBase(config, context)
 {
-    auto talkRepo = lab2::infrastructure::InMemoryTalkRepository();
+    auto talkRepo = std::make_shared<lab2::infrastructure::InMemoryTalkRepository>(
+        lab2::infrastructure::InMemoryTalkRepository());
     talkService_ = std::make_shared<lab2::application::TalkService>(talkRepo);   
 }
 
