@@ -90,7 +90,7 @@ std::string EventGetTalksHandler::HandleRequestThrow(
     try {
         request.GetHttpResponse().SetContentType(userver::http::content_type::kApplicationJson);
 
-        lab2::domain::EventId eventId = lab2::domain::EventId(std::stoll(request.GetArg("event_id")));
+        lab2::domain::EventId eventId = lab2::domain::EventId(std::stoll(request.GetPathArg("event_id")));
 
         auto events = eventService_->GetEventTalks(eventId);
 

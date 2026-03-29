@@ -26,8 +26,8 @@ paths:
             application/json:
               schema:
                 $ref: "../definitions/users.yaml#/components/schemas/User"
-        409:
-          description: User already exists
+        500:
+          description: Error
     get:
       parameters:
         - name: email
@@ -41,8 +41,12 @@ paths:
             application/json:
               schema:
                 $ref: "../definitions/users.yaml#/components/schemas/User"
+        400:
+          description: Invalid schema
         404:
           description: Not found
+        500:
+          description: Error
 
   /users/login:
     post:
@@ -59,8 +63,10 @@ paths:
             application/json:
               schema:
                 $ref: "../definitions/users.yaml#/components/schemas/UserLoginResponseBody"
-        401:
-          description: Unauthorized
+        400:
+          description: Invalid schema
+        500:
+          description: Error
   
   /users/{name_surname}:
     get:
@@ -79,6 +85,10 @@ paths:
                 type: array
                 items:
                   $ref: "../definitions/users.yaml#/components/schemas/User"
+        400:
+          description: Invalid schema
+        500:
+          description: Error
   
   /talks:
     post:
@@ -95,6 +105,12 @@ paths:
             application/json:
               schema:
                 $ref: "../definitions/talks.yaml#/components/schemas/Talk"
+        400:
+          description: Invalid schema
+        403:
+          description: Invalid token
+        500:
+          description: Error
     get:
       responses:
         200:
@@ -105,6 +121,12 @@ paths:
                 type: array
                 items:
                   $ref: "../definitions/talks.yaml#/components/schemas/Talk"
+        400:
+          description: Invalid schema
+        403:
+          description: Invalid token
+        500:
+          description: Error
 
   /events:
     post:
@@ -121,6 +143,12 @@ paths:
             application/json:
               schema:
                 $ref: "../definitions/events.yaml#/components/schemas/Event"
+        400:
+          description: Invalid schema
+        403:
+          description: Invalid token
+        500:
+          description: Error
 
   /events/{event_id}/talks:
     get:
@@ -139,7 +167,13 @@ paths:
                 type: array
                 items:
                   $ref: "../definitions/talks.yaml#/components/schemas/Talk"
-  
+        400:
+          description: Invalid schema
+        403:
+          description: Invalid token
+        500:
+          description: Error
+
   /events/{event_id}/talks/{talk_id}:
     put:
       parameters:
@@ -158,3 +192,9 @@ paths:
             application/json:
               schema:
                 $ref: "../definitions/talks.yaml#/components/schemas/Talk"
+        400:
+          description: Invalid schema
+        403:
+          description: Invalid token
+        500:
+          description: Error

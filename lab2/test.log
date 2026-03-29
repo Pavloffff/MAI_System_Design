@@ -1,0 +1,45 @@
+cmake --build build-debug -j 24
+ninja: no work to do.
+cd build-debug && ((test -t 1 && GTEST_COLOR=1 PYTEST_ADDOPTS="--color=yes" ctest -V) || ctest -V)
+UpdateCTestConfiguration  from :/home/user/lab2/build-debug/DartConfiguration.tcl
+Parse Config file:/home/user/lab2/build-debug/DartConfiguration.tcl
+Test project /home/user/lab2/build-debug
+Constructing a list of tests
+Done constructing a list of tests
+Updating test list for fixtures
+Added 0 tests to meet fixture requirements
+Checking test dependency graph...
+Checking test dependency graph end
+test 1
+    Start 1: testsuite-lab2
+
+1: Test command: /home/user/lab2/build-debug/venv-testsuite-lab2/bin/python "/home/user/lab2/build-debug/runtests-lab2" "--service-logs-pretty" "-vv"
+1: Working Directory: /home/user/lab2/build-debug
+1: Test timeout computed to be: 1500
+1: ============================= test session starts ==============================
+1: platform linux -- Python 3.10.12, pytest-9.0.2, pluggy-1.6.0 -- /home/user/lab2/build-debug/venv-testsuite-lab2/bin/python
+1: cachedir: .pytest_cache
+1: yandex-taxi-testsuite: version 0.4.5
+1: testsuite env: new, dir: /tmp/.yasuite-user
+1: rootdir: /home/user/lab2/tests
+1: configfile: pytest.ini
+1: plugins: aiohttp-1.1.0, asyncio-1.3.0
+1: asyncio: mode=auto, debug=False, asyncio_default_fixture_loop_scope=session, asyncio_default_test_loop_scope=function
+1: collecting ... collected 9 items
+1: 
+1: ../tests/test_events.py::test_create_event PASSED                        [ 11%]
+1: ../tests/test_events.py::test_get_event_talks PASSED                     [ 22%]
+1: ../tests/test_events.py::test_add_talk_to_event PASSED                   [ 33%]
+1: ../tests/test_talks.py::test_create_talk PASSED                          [ 44%]
+1: ../tests/test_talks.py::test_get_all_talks PASSED                        [ 55%]
+1: ../tests/test_users.py::test_user_create PASSED                          [ 66%]
+1: ../tests/test_users.py::test_user_login PASSED                           [ 77%]
+1: ../tests/test_users.py::test_user_get_by_email PASSED                    [ 88%]
+1: ../tests/test_users.py::test_user_get_by_name PASSED                     [100%]
+1: 
+1: ============================== 9 passed in 2.20s ===============================
+1/1 Test #1: testsuite-lab2 ...................   Passed    5.85 sec
+
+100% tests passed, 0 tests failed out of 1
+
+Total Test time (real) =   5.87 sec
