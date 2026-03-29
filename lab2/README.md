@@ -50,7 +50,7 @@ Openapi-спецификация в [api/openapi.yaml](api/openapi.yaml)
 
 ## 6. Тестирование
 
-Интеграционные тесты на python в директории tests
+Интеграционные тесты на python в директории [tests](tests)
 
 ---
 
