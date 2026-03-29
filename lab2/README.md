@@ -57,11 +57,11 @@ Openapi-спецификация в [api/openapi.yaml](api/openapi.yaml)
 ## 7. Результат
 
 - Исходный код: [src](src) 
-- openapi.yaml: 
-- README.md:
-- Тесты: 
-- Dockerfile: 
-- docker-compose.yaml: 
+- openapi.yaml: [api/openapi.yaml](api/openapi.yaml)
+- README.md: [README.md](README.md)
+- Тесты: [tests](tests)
+- Dockerfile: [Dockerfile](Dockerfile)
+- docker-compose.yaml: [docker-compose.yaml](docker-compose.yaml)
 
 ---
 
