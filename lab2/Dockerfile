@@ -1,15 +1,18 @@
-FROM ghcr.io/userver-framework/ubuntu-22.04-userver-pg-dev:latest AS builder
+FROM ghcr.io/userver-framework/ubuntu-22.04-userver-pg-dev:latest
 
-WORKDIR /app
+ENV CCACHE_DIR=/home/user/lab2/.ccache \
+  CORES_DIR=/cores \
+  PREFIX=~/.local \
+  SHELL=/bin/bash
+
+USER user
+
+WORKDIR /home/user/lab2
+
 COPY . .
 
-RUN rm -rf build* \
-    && make build-release
-
-RUN useradd -m appuser
-WORKDIR /app
+RUN make build-release
 
 EXPOSE 8080
-USER appuser
 
 CMD ["make", "start-release"]
