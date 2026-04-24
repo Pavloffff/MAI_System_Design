@@ -1,0 +1,39 @@
+version: "3.9"
+
+services:
+  postgres:
+    image: postgres:16
+    container_name: lab3-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: conference_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5434:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./schema.sql:/docker-entrypoint-initdb.d/01_schema.sql:ro
+      - ./data.sql:/docker-entrypoint-initdb.d/02_data.sql:ro
+    networks:
+      - network
+
+  lab3:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: lab3-service
+    restart: unless-stopped
+    depends_on:
+      - postgres
+    networks:
+      - network
+    ports:
+      - "8080:8080"
+
+networks:
+  network:
+    driver: bridge
+
+volumes:
+  pgdata:

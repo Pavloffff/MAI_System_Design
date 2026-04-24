@@ -1,0 +1,22 @@
+#include <infrastructure/jwt/jwt_token_repository.hpp>
+#include <stdexcept>
+
+namespace lab3::infrastructure {
+
+JwtTokenRepository::JwtTokenRepository(
+    std::shared_ptr<JwtTokenGenerator> token_generator)
+    : token_generator_(std::move(token_generator))
+{
+    if (!token_generator_) {
+        throw std::invalid_argument("JwtTokenRepository: token_generator is null");
+    }
+}
+
+std::string JwtTokenRepository::Get(std::shared_ptr<lab3::domain::User> user)
+{
+    const std::string user_id = std::to_string(user->Id().Value());
+
+    return token_generator_->Generate(user_id);
+}
+
+}  // namespace lab3::infrastructure

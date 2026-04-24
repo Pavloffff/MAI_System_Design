@@ -1,0 +1,82 @@
+components:
+  schemas:
+    EventType:
+      type: string
+      enum:
+        - public
+        - private
+
+    CreateEventRequestBody:
+      type: object
+      additionalProperties: false
+      required:
+        - title
+        - description
+        - event_type
+        - place
+        - start_time
+        - end_time
+        - user_id
+      properties:
+        title:
+          type: string
+        private_title:
+          type: string
+        description:
+          type: string
+        paid_entrance:
+          type: boolean
+          default: false
+        event_type:
+          $ref: '#/components/schemas/EventType'
+        registration:
+          type: boolean
+          default: false
+        place:
+          type: string
+        start_time:
+          $ref: "../definitions.yaml#/components/schemas/DateTime"
+        end_time:
+          $ref: "../definitions.yaml#/components/schemas/DateTime"
+        user_id:
+          type: integer
+
+    Event:
+      type: object
+      additionalProperties: false
+      required:
+        - id
+        - title
+        - description
+        - event_type
+        - registration
+        - paid_entrance
+        - place
+        - start_time
+        - end_time
+        - user_id
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        private_title:
+          type: string
+        description:
+          type: string
+        paid_entrance:
+          type: boolean
+          default: false
+        event_type:
+          $ref: '#/components/schemas/EventType'
+        registration:
+          type: boolean
+          default: false
+        place:
+          type: string
+        start_time:
+          $ref: "../definitions.yaml#/components/schemas/DateTime"
+        end_time:
+          $ref: "../definitions.yaml#/components/schemas/DateTime"
+        user_id:
+          type: integer

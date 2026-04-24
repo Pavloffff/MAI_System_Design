@@ -1,0 +1,200 @@
+openapi: 3.0.0
+info:
+  description: Event Management API
+  title: Service sample
+  version: "1.0.0"
+
+servers:
+  - url: uservice-sample.yandex.net
+    description: production
+  - url: uservice-sample.tst.yandex.net
+    description: testing
+
+paths:
+  /users:
+    post:
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "../definitions/users.yaml#/components/schemas/UserCreateRequestBody"
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "../definitions/users.yaml#/components/schemas/User"
+        500:
+          description: Error
+    get:
+      parameters:
+        - name: email
+          in: query
+          schema:
+            type: string
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "../definitions/users.yaml#/components/schemas/User"
+        400:
+          description: Invalid schema
+        404:
+          description: Not found
+        500:
+          description: Error
+
+  /users/login:
+    post:
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "../definitions/users.yaml#/components/schemas/UserLoginRequestBody"
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "../definitions/users.yaml#/components/schemas/UserLoginResponseBody"
+        400:
+          description: Invalid schema
+        500:
+          description: Error
+  
+  /users/{name_surname}:
+    get:
+      parameters:
+        - name: name_surname
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "../definitions/users.yaml#/components/schemas/User"
+        400:
+          description: Invalid schema
+        500:
+          description: Error
+  
+  /talks:
+    post:
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "../definitions/talks.yaml#/components/schemas/CreateTalkRequestBody"
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "../definitions/talks.yaml#/components/schemas/Talk"
+        400:
+          description: Invalid schema
+        403:
+          description: Invalid token
+        500:
+          description: Error
+    get:
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "../definitions/talks.yaml#/components/schemas/Talk"
+        400:
+          description: Invalid schema
+        403:
+          description: Invalid token
+        500:
+          description: Error
+
+  /events:
+    post:
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "../definitions/events.yaml#/components/schemas/CreateEventRequestBody"
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "../definitions/events.yaml#/components/schemas/Event"
+        400:
+          description: Invalid schema
+        403:
+          description: Invalid token
+        500:
+          description: Error
+
+  /events/{event_id}/talks:
+    get:
+      parameters:
+        - name: event_id
+          in: path
+          schema:
+            type: integer
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                schema:
+                type: array
+                items:
+                  $ref: "../definitions/talks.yaml#/components/schemas/Talk"
+        400:
+          description: Invalid schema
+        403:
+          description: Invalid token
+        500:
+          description: Error
+
+  /events/{event_id}/talks/{talk_id}:
+    put:
+      parameters:
+        - name: event_id
+          in: path
+          schema:
+            type: integer
+        - name: talk_id
+          in: path
+          schema:
+            type: integer
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "../definitions/talks.yaml#/components/schemas/Talk"
+        400:
+          description: Invalid schema
+        403:
+          description: Invalid token
+        500:
+          description: Error
