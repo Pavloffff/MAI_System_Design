@@ -1,0 +1,67 @@
+components:
+  schemas:
+    UserCreateRequestBody:
+      type: object
+      additionalProperties: false
+      required:
+        - email
+        - name
+        - surname
+        - phone
+        - password
+      properties:
+        email:
+          type: string
+        name:
+          type: string
+        surname:
+          type: string
+        phone:
+          type: string
+        password:
+          type: string
+
+    UserLoginRequestBody:
+      type: object
+      additionalProperties: false
+      required:
+        - email
+        - password
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+
+    UserLoginResponseBody:
+      type: object
+      additionalProperties: false
+      required:
+        - status
+        - token
+      properties:
+        status:
+          type: boolean
+        token:
+          type: string
+
+    User:
+      type: object
+      additionalProperties: false
+      required:
+        - id
+        - email
+        - name
+        - surname
+        - phone
+      properties:
+        id:
+          type: integer
+        email:
+          type: string
+        name:
+          type: string
+        surname:
+          type: string
+        phone:
+          type: string

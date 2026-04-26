@@ -1,0 +1,50 @@
+components:
+  schemas:
+    CreateTalkRequestBody:
+      type: object
+      additionalProperties: false
+      required:
+        - title
+        - start_time
+        - end_time
+        - user_id
+        - event_id
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+        start_time:
+          $ref: "../definitions.yaml#/components/schemas/DateTime"
+        end_time:
+          $ref: "../definitions.yaml#/components/schemas/DateTime"
+        user_id:
+          type: integer
+        event_id:
+          type: integer
+
+    Talk:
+      type: object
+      additionalProperties: false
+      required:
+        - id
+        - title
+        - start_time
+        - end_time
+        - user_id
+        - event_id
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        description:
+          type: string
+        start_time:
+          $ref: "../definitions.yaml#/components/schemas/DateTime"
+        end_time:
+          $ref: "../definitions.yaml#/components/schemas/DateTime"
+        user_id:
+          type: integer
+        event_id:
+          type: integer

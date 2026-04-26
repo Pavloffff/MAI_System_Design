@@ -1,0 +1,48 @@
+services:
+  mongo:
+    image: mongo:7.0
+    container_name: lab4-mongo
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: mongo
+      MONGO_INITDB_ROOT_PASSWORD: mongo
+      MONGO_INITDB_DATABASE: conference_db
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodata:/data/db
+      - ./init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js:ro
+      - ./data.js:/docker-entrypoint-initdb.d/data.js:ro
+      - ./validation.js:/docker-entrypoint-initdb.d/validation.js:ro
+      - ./queries.js:/docker-entrypoint-initdb.d/queries.js:ro
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    networks:
+      - network
+    restart: unless-stopped
+
+  lab4:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: lab4-service
+    restart: unless-stopped
+    environment:
+      MONGO_URI: mongodb://mongo:mongo@mongo:27017/conference_db?authSource=admin
+    depends_on:
+      mongo:
+        condition: service_healthy
+    networks:
+      - network
+    ports:
+      - "8080:8080"
+
+volumes:
+  mongodata:
+
+networks:
+  network:
+    driver: bridge
